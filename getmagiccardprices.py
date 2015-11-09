@@ -10,6 +10,7 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
+import os
 import sys
 import urllib
 import csv
@@ -36,9 +37,11 @@ class Render(QWebPage):
 #r = Render(url)
 #html = r.frame.toHtml()
 
+ifile_path = os.getcwd() + "mcardlist.csv"
+ofile_path = os.getcwd() + "py-mcardlist.csv"
 
-ifile  = open('C:\\Users\\Geoff\\Desktop\\mcardlist.csv', "rb")
-ofile = open('C:\\Users\\Geoff\\Desktop\\py-mcardlist.csv', "a")
+ifile  = open(ifile_path, "rb")
+ofile = open(ofile_path, "a")
 reader = csv.reader(ifile, delimiter=';')
 pattern = re.compile("TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)")
 
