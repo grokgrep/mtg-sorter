@@ -10,17 +10,18 @@
 #-------------------------------------------------------------------------------
 #!/usr/bin/env python
 
-import os
-import sys
-import urllib
 import csv
+import os
 import re
+import sys
 import time
 
+from lxml import html
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4.QtWebKit import *
 
+# Renders page passed as "url"
 class Render(QWebPage):
   def __init__(self, url):
     self.app = QApplication(sys.argv)
@@ -33,36 +34,39 @@ class Render(QWebPage):
     self.frame = self.mainFrame()
     self.app.quit()
 
-#url = 'http://sitescraper.net'
-#r = Render(url)
-#html = r.frame.toHtml()
+# Input and output file handling
+ifile  = open(os.getcwd() + "\\" + str(sys.argv[1]), "rb")
+ofile = open(os.getcwd() + "\\" + str(sys.argv[2]), "a")
+if os.stat(os.getcwd() + "\\" + str(sys.argv[2])).st_size < 1:
+    print("Creating " + sys.argv[2])
+    toWrite = "NAME,QTY,LOW(ea.),MID(ea.),HI(ea.),LOW,MID,HI\n"
+    ofile.write(toWrite)
+else:
+    print("Appending " + sys.argv[2])
 
-ifile_path = os.getcwd() + "mcardlist.csv"
-ofile_path = os.getcwd() + "py-mcardlist.csv"
-
-ifile  = open(ifile_path, "rb")
-ofile = open(ofile_path, "a")
-reader = csv.reader(ifile, delimiter=';')
+# CSV reader and regex for price search
+reader = csv.reader(ifile, delimiter=",")
 pattern = re.compile("TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)")
 
-counter = 0;
-
 for row in reader:
-    if counter < int(sys.argv[1]):
-        counter = counter + 1
-        continue
+    # Query for exact card name, no quotes.
+    # e.g. "http://magiccards.info/query?q=!Bane of Bala Ged"
+    url = "http://magiccards.info/query?q=!" + str(row[0])
 
-    cardurl = 'http://magiccards.info/query?q=!' + row[0]
-    cardinfo = Render(cardurl)
-    myhtml = unicode(cardinfo.frame.toHtml()).encode('ascii','ignore')
-    #print myhtml
-    prices = pattern.search(myhtml)
-    toWrite = "\"" + row[0] + "\"," + row[1] + ","
+    # Render page and converts to text
+    r = Render(url)
+    result = r.frame.toHtml().toAscii()
+
+    # Fetch prices and print to file
+    prices = pattern.search(result)
+    toWrite = row[0] + "," + row[1] + ","
     if prices:
         toWrite = toWrite + prices.group(1) + "," + prices.group(2) + "," + prices.group(3) + "," + str(float(prices.group(1)) * int(row[1])) + "," + str(float(prices.group(2)) * int(row[1])) + "," + str(float(prices.group(3)) * int(row[1]))
     else:
         toWrite = toWrite + ",,,,,"
     toWrite = toWrite + "\n"
-    print toWrite
     ofile.write(toWrite)
+
+    # Need to exit here or Qt craps out as soon as second row is hit
+    # Why?
     exit()
