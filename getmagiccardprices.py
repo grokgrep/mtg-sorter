@@ -44,13 +44,13 @@ ifile = open(os.getcwd() + "\\" + str(sys.argv[1]), "rb")
 ofile = open(os.getcwd() + "\\" + str(sys.argv[2]), "a")
 if os.stat(os.getcwd() + "\\" + str(sys.argv[2])).st_size < 1:
     print("Creating " + sys.argv[2])
-    toWrite = "NAME;QTY;LOW(ea.);MID(ea.);HI(ea.);LOW;MID;HI\n"
+    toWrite = "NAME,QTY,LOW(ea.),MID(ea.),HI(ea.),LOW,MID,HI\n"
     ofile.write(toWrite)
 else:
     print("Appending " + sys.argv[2])
 
 # CSV reader and regex for price search
-reader = csv.reader(ifile, delimiter=";")
+reader = csv.reader(ifile, delimiter=",")
 pattern = re.compile("TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)")
 
 for row in reader:
