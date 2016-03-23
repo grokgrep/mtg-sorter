@@ -9,7 +9,6 @@
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
 
-
 # Matthew Sheridan
 # getmagiccardprices.py
 # 15 November 2015
@@ -24,10 +23,6 @@ import re
 import sys
 import time
 
-# import PyQt4.QtGui
-# import PyQt4.QtCore
-# import PyQt4.QtWebKit
-
 # Renders page passed as "url"
 def render(url):
     page = QtWebKit.QWebPage()
@@ -39,36 +34,47 @@ def render(url):
 
 app = QtGui.QApplication(sys.argv)
 
-# Input and output file handling
-ifile = open(os.getcwd() + "\\" + str(sys.argv[1]), "rb")
-ofile = open(os.getcwd() + "\\" + str(sys.argv[2]), "a")
-if os.stat(os.getcwd() + "\\" + str(sys.argv[2])).st_size < 1:
-    print("Creating " + sys.argv[2])
-    toWrite = "NAME,QTY,LOW(ea.),MID(ea.),HI(ea.),LOW,MID,HI\n"
-    ofile.write(toWrite)
-else:
-    print("Appending " + sys.argv[2])
-
-# CSV reader and regex for price search
-reader = csv.reader(ifile, delimiter=",")
+# Output file field names, regex for price search, and empty array of rows to output.
+ofields = ["NAME","QTY","LOW(ea.)","MID(ea.)","HI(ea.)","LOW","MID","HI"]
 pattern = re.compile("TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)")
+orows = []
 
+# File handling.
+ifile = open(os.getcwd() + "\\" + str(sys.argv[1]), "rb")
+reader = csv.reader(ifile, delimiter=";")
+ofile = open(os.getcwd() + "\\" + str(sys.argv[2]), "ab")
+writer = csv.writer(ofile, dialect='excel')
+
+# Add header line to output if file doesn't already exist.
+if os.stat(os.getcwd() + "\\" + str(sys.argv[2])).st_size < 1:
+    orows.append(ofields)
+
+success = 0
+failed = 0
 for row in reader:
-    # Query for exact card name, no quotes.
-    url = "http://magiccards.info/query?q=!" + str(row[0])
+    # Query for exact card name.
+    name = str(row[0])
+    qty = int(row[1])
+    print "Fetching \"" + name + "\""
+    url = "http://magiccards.info/query?q=!" + name
     result = render(url)
 
-    # Fetch prices and write
+    # Scrape prices and append to output if they were found.
     prices = pattern.search(result)
-    toWrite = row[0] + "," + row[1] + ","
     if prices:
-        toWrite = toWrite + prices.group(1) + "," + prices.group(2) + "," + prices.group(3) + "," + str(float(prices.group(1)) * int(row[1])) + "," + str(float(prices.group(2)) * int(row[1])) + "," + str(float(prices.group(3)) * int(row[1]))
+        orows.append([name, qty, prices.group(1), prices.group(2), prices.group(3), float(prices.group(1)) * qty, float(prices.group(2)) * qty, float(prices.group(3)) * qty])
+        success += 1
     else:
-        toWrite = toWrite + ",,,,,"
-    toWrite = toWrite + "\n"
-    ofile.write(toWrite)
-    # print toWrite
+        orows.append([name, qty])
+        failed += 1
 
-    # Need to exit here or Qt craps out as soon as second row is hit
-    # Why?
-    # app.exit()
+# Write out all rows.
+for row in orows:
+    writer.writerow(row)
+
+if success > 0:
+    print "Done. Wrote " + str(success) + " rows successfully."
+if failed > 0:
+    print "Did not find " + str(failed) + " items."
+
+app.exit()
