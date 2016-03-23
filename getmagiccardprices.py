@@ -17,11 +17,7 @@
 #!/usr/bin/env python
 
 from PySide import QtCore, QtGui, QtWebKit
-import csv
-import os
-import re
-import sys
-import time
+import csv, os, re, sys
 
 # Handle args.
 if len(sys.argv) != 3:
@@ -79,6 +75,7 @@ def write_cards(path, fields, output):
 # Pre:  input is a list of card names to search for and quantity of each.
 #       pattern is the regular expression
 # Post: Returns a list of names, quantities, and prices.
+#       Prints progress to console.
 def scrape(input_rows, pattern):
     global count_total
     global count_success
@@ -115,6 +112,7 @@ input_rows = read_cards(input_path)
 output_rows = scrape(input_rows, pattern)
 write_cards(output_path, output_fields, output_rows)
 
+# Sum everything up!
 print ""
 if count_success > 0:
     print "Found:\t" + str(count_success) + " card(s)."
