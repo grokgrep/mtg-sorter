@@ -41,42 +41,58 @@ def render(url):
 app = QtGui.QApplication(sys.argv)
 
 # Output file field names, regex for price search, and empty array of rows to output.
-ofields = ["NAME","QTY","LOW(ea.)","MID(ea.)","HI(ea.)","LOW","MID","HI"]
+output_fields = ["NAME","QTY","LOW (ea.)","MID (ea.)","HI (ea.)","LOW","MID","HI"]
 pattern = re.compile("TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)")
-orows = []
+input_rows = []
+output_rows = []
 
-# File handling.
-ifile = open(os.getcwd() + "\\" + str(sys.argv[1]), "rb")
-reader = csv.reader(ifile, delimiter=";")
-ofile = open(os.getcwd() + "\\" + str(sys.argv[2]), "ab")
-writer = csv.writer(ofile, dialect='excel')
+input_path = os.getcwd() + "\\" + str(sys.argv[1])
+output_path = os.getcwd() + "\\" + str(sys.argv[2])
 
-# Add header line to output if file doesn't already exist.
-if os.stat(os.getcwd() + "\\" + str(sys.argv[2])).st_size < 1:
-    orows.append(ofields)
+input_file = open(input_path, "rb")
+reader = csv.reader(input_file, delimiter=";")
+try:
+    for row in reader:
+        input_rows.append(row)
+finally:
+    input_file.close()
 
+counter = 0
+total = len(input_rows)
 success = 0
 failed = 0
-for row in reader:
-    # Query for exact card name.
+for row in input_rows:
+    counter += 1
     name = str(row[0])
     qty = int(row[1])
-    print "Fetching \"" + name + "\""
+
+    # Query for exact card name.
+    print "Fetching " + str(counter) + "/" + str(total) + ": \"" + name + "\""
     url = "http://magiccards.info/query?q=!" + name
     result = render(url)
 
     # Scrape prices and append to output if they were found.
     prices = pattern.search(result)
     if prices:
-        orows.append([name, qty, prices.group(1), prices.group(2), prices.group(3), float(prices.group(1)) * qty, float(prices.group(2)) * qty, float(prices.group(3)) * qty])
+        output_rows.append([name, qty, prices.group(1), prices.group(2), prices.group(3), float(prices.group(1)) * qty, float(prices.group(2)) * qty, float(prices.group(3)) * qty])
         success += 1
     else:
-        orows.append([name, qty])
+        output_rows.append([name, qty])
         failed += 1
 
 # Write out all rows.
-for row in orows:
-    writer.writerow(row)
+output_file = open(output_path, "ab")
+writer = csv.writer(output_file, dialect='excel')
+
+# Add header line to output if file is empty.
+if os.stat(output_path).st_size < 1:
+    output_rows.insert(0, output_fields)
+
+try:
+    for row in output_rows:
+        writer.writerow(row)
+finally:
+    output_file.close()
 
 if success > 0:
     print "Done. Wrote " + str(success) + " rows successfully."
