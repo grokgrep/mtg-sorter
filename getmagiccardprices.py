@@ -49,13 +49,10 @@ output_rows = []
 input_path = os.getcwd() + "\\" + str(sys.argv[1])
 output_path = os.getcwd() + "\\" + str(sys.argv[2])
 
-input_file = open(input_path, "rb")
-reader = csv.reader(input_file, delimiter=";")
-try:
+with open(input_path, "rb") as input_file:
+    reader = csv.reader(input_file, delimiter=";")
     for row in reader:
         input_rows.append(row)
-finally:
-    input_file.close()
 
 counter = 0
 total = len(input_rows)
@@ -81,18 +78,13 @@ for row in input_rows:
         failed += 1
 
 # Write out all rows.
-output_file = open(output_path, "ab")
-writer = csv.writer(output_file, dialect='excel')
-
-# Add header line to output if file is empty.
-if os.stat(output_path).st_size < 1:
-    output_rows.insert(0, output_fields)
-
-try:
+with open(output_path, "ab") as output_file:
+    writer = csv.writer(output_file, dialect='excel')
+    # Add header line to output if file is empty.
+    if os.stat(output_path).st_size < 1:
+        output_rows.insert(0, output_fields)
     for row in output_rows:
         writer.writerow(row)
-finally:
-    output_file.close()
 
 if success > 0:
     print "Done. Wrote " + str(success) + " rows successfully."
