@@ -4,7 +4,7 @@ MTG sorting machine experimentation.
 A collaborative effort by [@awesor](https://github.com/awesor), [@7thGate](https://github.com/7thGate), and [@grokgrep](https://github.com/grokgrep).
 
     Usage:
-      getmagiccardprices.py [-h] INPUT OUTPUT
+      getmagiccardprices.py [-hox] INPUT OUTPUT
 
     Arguments:
       INPUT   Input file. A list of exact card names and quantities, delimited by
