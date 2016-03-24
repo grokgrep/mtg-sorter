@@ -9,7 +9,7 @@
 # Description:  Retrieve current price data for MTG cards by name.
 
 """Usage:
-  getmagiccardprices.py [-h] INPUT OUTPUT
+  getmagiccardprices.py [-hox] INPUT OUTPUT
 
 Arguments:
   INPUT   Input file. A list of exact card names and quantities, delimited by
@@ -20,6 +20,8 @@ Arguments:
 
 Options:
   -h --help  Show this help message.
+  -o         Overwrite OUTPUT file instead of appending.
+  -x         Use Excel-formatted input from deckstats export.
   --version  Display program version number.
 
 """
@@ -27,12 +29,22 @@ Options:
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "23 March 2016"
-__version__ = "0.1g"
+__version__ = "0.1h"
 __status__  = "Development"
 
+INPUT_FIELDS   = ["amount", "card_name", "is_foil", "is_pinned", "set_id"]
 OUTPUT_FIELDS  = ["NAME", "QTY", "LOW (ea.)", "MID (ea.)",
                   "HI (ea.)", "LOW", "MID", "HI"]
 SEARCH_PATTERN = "TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)"
+
+ifile = None
+ofile = None
+count_total = 0
+count_success = 0
+count_failed = 0
+read_mode = 0
+write_mode = 0
+write_overwrite = False
 
 import os
 import sys
@@ -46,11 +58,20 @@ from PySide import QtCore, QtGui, QtWebKit
 # Post: Returns list of card names to search for and quantity of each.
 def read_cards(path):
     global count_total
+    global read_mode
     dat = []
     with open(path, "rb") as i:
-        read = csv.reader(i, delimiter=";")
+        if read_mode == 1:
+            read = csv.reader(i, dialect="excel")
+        else:
+            read = csv.reader(i, delimiter=";")
+
         for r in read:
-            dat.append(r)
+            if read_mode == 1:
+                if r[0] != INPUT_FIELDS[0]:
+                    dat.append([r[1], r[0]])
+            else:
+                dat.append(r)
     count_total = len(dat)
     return dat
 
@@ -62,7 +83,11 @@ def read_cards(path):
 # Post: The file at path has either been created or appended with the rows of
 #       card names, quantities, and prices.
 def write_cards(path, fields, output):
-    with open(path, "ab") as o:
+    global write_overwrite
+    f_mode = "ab"
+    if write_overwrite:
+        f_mode = "wb"
+    with open(path, f_mode) as o:
         writer = csv.writer(o, dialect='excel')
         # Add header line to output if file is empty.
         if os.stat(path).st_size < 1:
@@ -72,9 +97,10 @@ def write_cards(path, fields, output):
 
 # Pre:  msg is the specific error message to pring.
 # Post: Prints error message, usage, and quits.
-def error(msg):
+def error(msg, print_usage=False):
     print msg
-    print str(__doc__)[:-2]
+    if print_usage:
+        print str(__doc__)[:-2]
     exit(1)
 
 # Pre:  url is URL of webpage to render.
@@ -130,19 +156,16 @@ def scrape(input_rows, pattern):
     app.exit()
     return dat
 
-def main(args):
+def main():
+    global ifile
+    global ofile
+    global read_mode
+    global write_mode
     # Filename and path handling.
-    input_filename = str(args["INPUT"])
-    output_filename = str(args["OUTPUT"])
-    input_path = os.getcwd() + "\\" + str(input_filename)
-    output_path = os.getcwd() + "\\" + str(output_filename)
+    input_path = os.getcwd() + "\\" + str(ifile)
+    output_path = os.getcwd() + "\\" + str(ofile)
     if not os.path.isfile(input_path):
-        error(input_filename + " is not a valid filename.\n")
-
-    # Counters for summary.
-    count_total = 0
-    count_success = 0
-    count_failed = 0
+        error(ifile + " is not a valid filename.\n", True)
 
     # Read in cards to search for, conduct the search, and write out results.
     input_rows = read_cards(input_path)
@@ -159,4 +182,10 @@ def main(args):
 if __name__ == "__main__":
     # Parse arguments and call main function.
     args = docopt(__doc__, help=True, version=__version__)
-    main(args)
+    ifile = str(args["INPUT"])
+    ofile = str(args["OUTPUT"])
+    if args["-o"]:
+        write_overwrite = True
+    if args["-x"]:
+        read_mode = 1
+    main()
