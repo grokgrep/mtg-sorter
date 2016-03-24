@@ -1,51 +1,41 @@
-#-------------------------------------------------------------------------------
-# Name:        module1
-# Purpose:
-#
-# Author:      Geoff
-#
-# Created:     10/04/2012
-# Copyright:   (c) Geoff 2012
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
-
-# Matthew Sheridan
-# getmagiccardprices.py
-# 15 November 2015
-# Retrieve current price data for MTG cards by name.
-
 #!/usr/bin/env python
 
+# Name:         getmagiccardprices.py
+# Authors:      Geoff, Matthew Sheridan
+# Date:         04 October 2012
+# Revision:     23 March 2016
+# Copyright:    (c) Geoff 2012
+# Licence:      <your licence>
+# Description:  Retrieve current price data for MTG cards by name.
+
+"""Usage:
+  getmagiccardprices.py [-h] INPUT OUTPUT
+
+Arguments:
+  INPUT   Input file. A list of exact card names and quantities, delimited by semicolon.
+  OUTPUT  Output file. A CSV formatted for Excel; will be appended if it already exists.
+
+Options:
+  -h --help  Show this help message.
+  --version  Display program version number.
+
+"""
+
+__authors__ = "Geoff, Matthew Sheridan"
+__credits__ = ["Geoff", "Matthew Sheridan"]
+__date__    = "23 March 2016"
+__version__ = "0.1f"
+__status__  = "Development"
+
+OUTPUT_FIELDS  = ["NAME","QTY","LOW (ea.)","MID (ea.)","HI (ea.)","LOW","MID","HI"]
+SEARCH_PATTERN = "TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)"
+
+import os
+import sys
+import csv
+import re
+from docopt import docopt
 from PySide import QtCore, QtGui, QtWebKit
-import csv, os, re, sys
-
-# Handle args.
-if len(sys.argv) != 3:
-    print "Usage:\n  getmagiccardprices.py input output\n"
-    print "input \tA list of exact card names and quantities, delimited by semicolon."
-    print "output \tA CSV formatted for Excel; will be appended if it already exists."
-    exit()
-
-# Output field names, regex for price search, file paths, and rows of input/output data.
-output_fields = ["NAME","QTY","LOW (ea.)","MID (ea.)","HI (ea.)","LOW","MID","HI"]
-pattern = re.compile("TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)")
-input_path = os.getcwd() + "\\" + str(sys.argv[1])
-output_path = os.getcwd() + "\\" + str(sys.argv[2])
-
-# Counters for summary and misc.
-count_total = 0
-count_success = 0
-count_failed = 0
-
-# Pre:  url is URL of webpage to render.
-# Post: Returns HTML of rendered page.
-def render(url):
-    page = QtWebKit.QWebPage()
-    loop = QtCore.QEventLoop()
-    page.mainFrame().loadFinished.connect(loop.quit)
-    page.mainFrame().load(url)
-    loop.exec_()
-    return page.mainFrame().toHtml()
 
 # Pre:  path is an input file path. This file lists names and quantities, delimited by semicolon.
 # Post: Returns list of card names to search for and quantity of each.
@@ -72,6 +62,23 @@ def write_cards(path, fields, output):
         for r in output:
             writer.writerow(r)
 
+# Pre:  msg is the specific error message to pring.
+# Post: Prints error message, usage, and quits.
+def error(msg):
+    print msg
+    print str(__doc__)[:-2]
+    exit(1)
+
+# Pre:  url is URL of webpage to render.
+# Post: Returns HTML of rendered page.
+def render(url):
+    page = QtWebKit.QWebPage()
+    loop = QtCore.QEventLoop()
+    page.mainFrame().loadFinished.connect(loop.quit)
+    page.mainFrame().load(url)
+    loop.exec_()
+    return page.mainFrame().toHtml()
+
 # Pre:  input is a list of card names to search for and quantity of each.
 #       pattern is the regular expression
 # Post: Returns a list of names, quantities, and prices.
@@ -80,17 +87,20 @@ def scrape(input_rows, pattern):
     global count_total
     global count_success
     global count_failed
+    app = QtGui.QApplication(sys.argv)
     dat = []
     counter = 0
     sys.stdout.write("Fetching...")
     sys.stdout.flush()
+    regex = re.compile(pattern)
+
     for r in input_rows:
         counter += 1
         name = str(r[0])
         qty = int(r[1])
         # Search for exact name match.
         result = render("http://magiccards.info/query?q=!" + name)
-        prices = pattern.search(result)
+        prices = regex.search(result)
 
         # Display running progress.
         sys.stdout.write("\rFetching... (" + str(counter) + "/" + str(count_total) + ")")
@@ -103,20 +113,33 @@ def scrape(input_rows, pattern):
         else:
             dat.append([name, qty])
             count_failed += 1
+
+    app.exit()
     return dat
 
-app = QtGui.QApplication(sys.argv)
+if __name__ == "__main__":
+    # Parse arguments.
+    args = docopt(__doc__, help=True, version=__version__)
+    input_filename = str(args["INPUT"])
+    output_filename = str(args["OUTPUT"])
+    input_path = os.getcwd() + "\\" + str(input_filename)
+    output_path = os.getcwd() + "\\" + str(output_filename)
+    if not os.path.isfile(input_path):
+        error(input_filename + " is not a valid filename.\n")
 
-# Read in cards, conduct search, write results to file.
-input_rows = read_cards(input_path)
-output_rows = scrape(input_rows, pattern)
-write_cards(output_path, output_fields, output_rows)
+    # Counters for summary and misc.
+    count_total = 0
+    count_success = 0
+    count_failed = 0
 
-# Sum everything up!
-print ""
-if count_success > 0:
-    print "Found:\t" + str(count_success) + " card(s)."
-if count_failed > 0:
-    print "Missed:\t " + str(count_failed) + " card(s)."
+    # Read in cards to search for, conduct the search, and write results to file.
+    input_rows = read_cards(input_path)
+    output_rows = scrape(input_rows, SEARCH_PATTERN)
+    write_cards(output_path, OUTPUT_FIELDS, output_rows)
 
-app.exit()
+    # Sum everything up!
+    print ""
+    if count_success > 0:
+        print "Found:\t" + str(count_success) + " card(s)."
+    if count_failed > 0:
+        print "Missed:\t " + str(count_failed) + " card(s)."
