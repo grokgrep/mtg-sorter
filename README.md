@@ -1,7 +1,7 @@
 # mtg-sorter
 MTG sorting machine experimentation.
 
-A collaborative effort by [@awesor](https://github.com/awesor), [@7thGate](https://github.com/7thGate), and [@grokgrep](https://github.com/grokgrep).
+A collaborative effort by [@awesor](https://github.com/awesor), [@7thGate](https://github.com/7thGate), and [@segfaultmagnet](https://github.com/segfaultmagnet).
 
     Usage:
       getmagiccardprices.py [-hox] INPUT OUTPUT
