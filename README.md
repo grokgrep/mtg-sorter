@@ -13,6 +13,8 @@ A collaborative effort by [@awesor](https://github.com/awesor), [@7thGate](https
               list of card names; quantities; and low, mid, and high prices. This
               file will be appended if it already exists.
 
-    Options:
-      -h --help  Show this help message.
-      --version  Display program version number.
+      Options:
+        -h --help  Show this help message.
+        -o         Overwrite OUTPUT file instead of appending.
+        -x         Use Excel-formatted input from deckstats export.
+        --version  Display program version number.
