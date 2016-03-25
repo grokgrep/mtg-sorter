@@ -31,22 +31,21 @@ Options:
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "23 March 2016"
-__version__ = "0.1i"
+__version__ = "0.1j"
 __status__  = "Development"
 
 CONFIG_FILENAME = "conf.ini"
 SEARCH_PATTERN = "TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)"
 
 READ_FORMATS  = ["deckstats", "list-semi"]
-# WRITE_FORMATS = ["excel"]
+WRITE_FORMATS = ["excel"]
 
 ERROR_INVALID_FILENAME = " is not a valid filename!"
 ERROR_READ_FORMAT = "Unknown read format!"
 
-deckstats_fields = None
-output_fields    = None
-ifile            = None
-ofile            = None
+set_defs         = None
+fields_deckstats = None
+fields_output    = None
 read_format      = None
 write_format     = None
 write_overwrite  = False
@@ -60,11 +59,17 @@ import csv
 import re
 from configobj import ConfigObj
 from docopt import docopt
+import python-numpy as numpy
 from PySide import QtCore, QtGui, QtWebKit
+
+def load_set_defs(path):
+    dat = None
+    return dat
 
 # Pre:  path is an input file path. This file lists names and quantities,
 #       delimited by semicolon.
-# Post: Returns list of card names to search for and quantity of each.
+# Post: Returns list of card names to search for and quantity of each:
+#       card name, quantity, set identifier
 def read_cards(path, read_format):
     global count_total
     dat = []
@@ -74,13 +79,14 @@ def read_cards(path, read_format):
             read = csv.reader(i, dialect="excel")
             for r in read:
                 # Skip header row.
-                if r[0] != deckstats_fields[0]:
-                    dat.append([r[1], r[0]])
+                if r[0] != fields_deckstats[0]:
+                    dat.append([r[1], r[0], r[4]])
 
         # For semicolon-delimited list:
         elif read_format == READ_FORMATS[1]:
             read = csv.reader(i, delimiter=";")
             for r in read:
+                r.append("0")
                 dat.append(r)
 
         # Any strange value for read_format should have already been caught...
@@ -158,6 +164,8 @@ def scrape(input_rows, pattern):
         counter += 1
         name = str(r[0])
         qty = int(r[1])
+        set_id = r[2]
+        print (name + ": x" + str(qty) + " (" + str(set_id) + ")")
         # Search for exact name match.
         result = render("http://magiccards.info/query?q=!" + name)
         prices = regex.search(result)
@@ -183,16 +191,16 @@ def scrape(input_rows, pattern):
     return dat
 
 def main():
-    global input_path
-    global output_path
-    global read_format
-    global write_format
+    # global input_path
+    # global output_path
+    # global read_format
+    # global write_format
 
     # Read in cards to search for, conduct the search, and write out results.
     input_rows = read_cards(input_path, read_format)
     output_rows = scrape(input_rows, SEARCH_PATTERN)
     write_cards(output_path, write_format, write_overwrite,
-                output_fields, output_rows)
+                fields_output, output_rows)
     print_summary(count_success, count_failed)
 
 if __name__ == "__main__":
@@ -201,15 +209,23 @@ if __name__ == "__main__":
 
     # Handle configuration issues.
     config = ConfigObj(CONFIG_FILENAME)
-    config_prices = config["get_prices"]
-    deckstats_fields = config_prices["deckstats_fields"]
-    output_fields = config_prices["output_fields"]
+    config_files  = config["files"]
+    config_format = config["format"]
+
+    # Load definitions to translate between deckstats and magiccards.
+    setfile = config_files["set_defs"]
+    set_defs_path = os.getcwd() + "\\" + setfile
+    set_defs = load_set_defs(set_defs_path)
+
+    # Headers for respective formats.
+    fields_deckstats = config_format["fields_deckstats"]
+    fields_output    = config_format["fields_output"]
 
     # Handle file paths.
-    ifile = str(args["INPUT"])
-    ofile = str(args["OUTPUT"])
-    input_path = os.getcwd() + "\\" + str(ifile)
-    output_path = os.getcwd() + "\\" + str(ofile)
+    ifile = args["INPUT"]
+    ofile = args["OUTPUT"]
+    input_path  = os.getcwd() + "\\" + ifile
+    output_path = os.getcwd() + "\\" + ofile
     if not os.path.isfile(input_path):
         error(ifile + ERROR_INVALID_FILENAME, True)
     if args["-o"]:

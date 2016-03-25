@@ -42,4 +42,6 @@ Clean up documentation (what is Python style??).
 
 [docopt](https://pypi.python.org/pypi/docopt/)
 
+numpy
+
 [PySide](https://pypi.python.org/pypi/PySide/)
