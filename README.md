@@ -17,12 +17,12 @@ Reads in a list of card names and quantities, then scrapes for prices based on a
 		          list of card names; quantities; and low, mid, and high prices. This
 		          file will be appended if it already exists.
 
-		  Options:
-  		    -h --help  Show this help message.
-  		    -l         Use a semicolon-delimited list of names and quantities instead of
-		               default deckstats formatting.
-  		    -o         Overwrite OUTPUT file instead of appending.
-  		    --version  Display program version number.
+		Options:
+  		  -h --help  Show this help message.
+  		  -l         Use a semicolon-delimited list of names and quantities instead of
+		             default deckstats formatting.
+  		  -o         Overwrite OUTPUT file instead of appending.
+  		  --version  Display program version number.
 
 ### But Wait, There's More
 Added file handling, configuration file, and basic error checking.
