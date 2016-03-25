@@ -1,0 +1,144 @@
+set_abrv,set_name,ds_id,mci_id
+ATQ,Antiquities,1,aq
+HML,Homelands,2,hl
+5ED,Fifth Edition,3,5e
+4ED,Fourth Edition,4,4e
+3ED,Revised Edition,5,rv
+2ED,Unlimited Edition,6,un
+LEB,Limited Edition Beta,7,be
+LEA,Limited Edition Alpha,8,al
+LEG,Legends,9,lg
+MMQ,Mercadian Masques,10,mm
+ICE,Ice Age,11,ia
+UGL,Unglued,12,ug
+9ED,Ninth Edition,13,9e
+ONS,Onslaught,14,on
+5DN,Fifth Dawn,15,5dn
+8ED,Eighth Edition,16,8e
+7ED,Seventh Edition,17,7e
+6ED,Sixth Edition,18,6e
+TMP,Tempest,19,tp
+CHR,Chronicles,20,chk
+FST,Future Sight,21,fut
+ARN,Arabian Nights,22,an
+USG,Urza's Saga,23,us
+UNH,Unhinged,24,uh
+ODY,Odyssey,25,od
+WTH,Weatherlight,26,wl
+PCY,Prophecy,27,pr
+ULG,Urza's Legacy,28,ul
+GPT,Guildpact,29,gp
+INV,Invasion,30,in
+10E,Tenth Edition,31,10e
+S99,Starter 1999,32,st
+MIR,Mirage,33,mr
+PO2,Portal Second Age,34,po2
+BRB,Battle Royale Box Set,35,br
+UDS,Urza's Destiny,36,ud
+TSP,Time Spiral,37,ts
+TOR,Torment,38,tr
+SCG,Scourge,39,sc
+NMS,Nemesis,40,ne
+STH,Stronghold,41,sh
+SOK,Saviors of Kamigawa,42,sok
+CLD,Coldsnap,43,cs
+FEM,Fallen Empires,44,fe
+PLC,Planar Chaos,45,pc
+ALL,Alliances,46,ai
+APC,Apocalypse,47,ap
+DST,Darksteel,48,ds
+MRD,Mirrodin,49,mi
+EXO,Exodus,50,ex
+DIS,Dissension,51,di
+RAV,Ravnica: City of Guilds,52,rav
+BTD,Beatdown Box Set,53,bd
+CHK,Champions of Kamigawa,54,chk
+BOK,Betrayers of Kamigawa,55,bok
+LGN,Legions,56,le
+VIS,Visions,57,vi
+POR,Portal,58,po
+PTK,Portal Three Kingdoms,59,p3k
+PLS,Planeshift,60,ps
+DRK,The Dark,61,dk
+JUD,Judgment,62,ju
+S00,Starter 2000,63,st2k
+LRW,Lorwyn,65,lw
+MOR,Morningtide,66,mt
+MED,Masters Edition (Online),67,med
+SHM,Shadowmoor,69,shm
+EVE,Eventide,70,eve
+ALA,Shards of Alara,71,ala
+EVG,Elves vs Goblins box set,72,-
+ME2,Masters Edition II (Online),73,me2
+FVD,From the Vault: Dragons,74,fvd
+JVC,Duel Decks: Jace vs. Chandra,75,jvc
+EVG,Duel Decks: Elves vs. Goblins,76,evg
+CON,Conflux,77,cfx
+ARB,Alara Reborn,78,arb
+TSB,Time Spiral Timeshifted,79,tsts
+M10,Magic 2010,80,m10
+DDC,Duel Decks: Divine vs. Demonic,81,dvd
+MED,Masters Edition,82,med
+ME2,Masters Edition II,83,me2
+ZEN,Zendikar,84,zen
+PCH,Planechase,85,pch
+ME3,Masters Edition III,86,me3
+GVL,Duel Decks: Garruk vs. Liliana,87,gvl
+WWK,Worldwake,88,wwk
+PDS,Premium Deck Series: Slivers,89,pds
+ROE,Rise of the Eldrazi,91,roe
+DDE,Duel Decks: Phyrexia vs. the Coalition,92,pvc
+M11,Magic 2011,93,m11
+ARC,Archenemy,94,arc
+FVE,From the Vault: Exiled,95,fve
+FVR,From the Vault: Relics,96,fvr
+SOM,Scars of Mirrodin,97,som
+DDF,Duel Decks: Elspeth vs. Tezzeret,98,ddf
+MBS,Mirrodin Besieged,99,mbs
+ME4,Masters Edition IV,100,me4
+PD2,Premium Deck Series: Fire and Lightning,101,pd2
+NPH,New Phyrexia,107,nph
+DDG,Duel Decks: Knights vs. Dragons,108,ddg
+DKM,Deckmasters,109,dm
+CMD,Commander,110,cmd
+M12,Magic 2012,111,m12
+ISD,Innistrad,112,isd
+DDH,Duel Decks: Ajani vs. Nicol Bolas,113,ddh
+FVL,From the Vault: Legends,114,fvl
+DKA,Dark Ascension,115,dka
+PD3,Premium Deck Series: Graveborn,116,pd3
+AVR,Avacyn Restored,117,avr
+PC2,Planechase 2012 Edition,118,pc2
+M13,Magic 2013,119,m13
+RTR,Return to Ravnica,120,rtr
+DDJ,Duel Decks: Izzet vs. Golgari,121,ddj
+DDI,Duel Decks: Venser vs. Koth,122,ddi
+V12,From the Vault: Realms,123,v12
+GTC,Gatecrash,124,gtc
+DGM,Dragon's Maze,125,dgm
+M14,Magic 2014 Core Set,126,m14
+DDK,Duel Decks: Sorin vs. Tibalt,127,ddk
+THS,Theros,128,ths
+C13,Commander 2013 Edition,129,c13
+BNG,Born of the Gods,130,bng
+JOU,Journey into Nyx,131,jou
+CNS,Conspiracy,132,cns
+M15,Magic 2015 Core Set,133,m15
+KTK,Khans of Tarkir,134,ktk
+C14,Commander 2014,135,c14
+FRF,Fate Reforged,136,frf
+DTK,Dragons of Tarkir,137,dtk
+ORI,Magic Origins,138,ori
+BFZ,Battle for Zendikar,139,bfz
+MMA,Modern Masters,140,mma
+MM2,Modern Masters 2015 Edition,141,mm2
+C15,Commander 2015,142,c15
+OGW,Oath of the Gatewatch,143,ogw
+SOI,Shadows Over Innistrad,144,soi
+EXP,Zendikar Expeditions,145,exp
+EMN,Eldritch Moon,146,-
+DCI,DCI Promos,106,-
+-,Magic Online Promo Cards,68,-
+-,(others),102,
+-,Promo set for Gatherer,64,-
+-,Renaissance,90,-
