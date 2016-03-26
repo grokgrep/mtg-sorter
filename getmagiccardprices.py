@@ -3,7 +3,7 @@
 # Name:         getmagiccardprices.py
 # Authors:      Geoff, Matthew Sheridan
 # Date:         04 October 2012
-# Revision:     23 March 2016
+# Revision:     25 March 2016
 # Copyright:    (c) Geoff 2012
 # Licence:      <your licence>
 # Description:  Retrieve current price data for MTG cards by name.
@@ -30,7 +30,7 @@ Options:
 
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
-__date__    = "23 March 2016"
+__date__    = "25 March 2016"
 __version__ = "0.2"
 __status__  = "Development"
 
