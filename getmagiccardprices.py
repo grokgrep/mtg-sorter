@@ -28,10 +28,12 @@ Options:
 
 """
 
+DEBUG = False
+
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "25 March 2016"
-__version__ = "0.2"
+__version__ = "0.2a"
 __status__  = "Development"
 
 CONFIG_FILENAME = "conf.ini"
@@ -171,8 +173,9 @@ def scrape(input_rows, pattern):
     app = QtGui.QApplication(sys.argv)
     dat = []
     counter = 0
-    sys.stdout.write("Fetching...")
-    sys.stdout.flush()
+    if not DEBUG:
+        sys.stdout.write("Fetching...")
+        sys.stdout.flush()
     regex = re.compile(pattern)
 
     for r in input_rows:
@@ -195,31 +198,43 @@ def scrape(input_rows, pattern):
         # Construct query. Use exact name if set is unknown.
         url_base = "http://magiccards.info/query?q="
         if not set_id == "-":
-            query_name = name
+            query_name = "\"" + name + "\""
             query_set  = " e:" + str(set_id) + "/en"
         else:
-            query_name = "!" + name
+            query_name = "\"" + name + "\""
             query_set  = ""
-        url_full = url_base + query_name + query_set
-        result = render(url_full)
+        query_full = query_name + query_set
+        result = render(url_base + query_full)
         prices = regex.search(result)
 
         # Display running progress.
-        sys.stdout.write("\rFetching... (" + str(counter) + "/" +
-                         str(count_total) + ")")
-        sys.stdout.flush()
-
-        # If exact match was found, add its data to output.
-        if prices:
-            dat.append([name, qty, set_name, prices.group(1),
-                        prices.group(2), prices.group(3),
-                        float(prices.group(1)) * qty,
-                        float(prices.group(2)) * qty,
-                        float(prices.group(3)) * qty])
-            count_success += 1
+        if DEBUG:
+            print str(counter) + "/" + str(count_total)
+            print "> " + name + ", " + str(r[2]) + " (" + set_id + ")"
+            print "  " + query_full
         else:
-            dat.append([name, qty])
+            sys.stdout.write("\rFetching... (" + str(counter) + "/" +
+                             str(count_total) + ")")
+            sys.stdout.flush()
+
+        # If match was found, add its data to output.
+        output_row = []
+        if prices:
+            output_row = [name, qty, set_name, prices.group(1),
+                          prices.group(2), prices.group(3),
+                          float(prices.group(1)) * qty,
+                          float(prices.group(2)) * qty,
+                          float(prices.group(3)) * qty]
+            count_success += 1
+            if DEBUG:
+                print "  Hit!"
+        else:
+            output_row = [name, qty, set_name]
             count_failed += 1
+            if DEBUG:
+                print "  Miss!"
+
+        dat.append(output_row)
 
     app.exit()
     return dat
