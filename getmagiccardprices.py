@@ -31,7 +31,7 @@ Options:
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "23 March 2016"
-__version__ = "0.1j"
+__version__ = "0.2"
 __status__  = "Development"
 
 CONFIG_FILENAME = "conf.ini"
@@ -59,12 +59,15 @@ import csv
 import re
 from configobj import ConfigObj
 from docopt import docopt
-import python-numpy as numpy
+import numpy as np
 from PySide import QtCore, QtGui, QtWebKit
 
+# Pre:  path is file path to the set definitions (should be ./set_defs.csv).
+# Post: Returns a numpy array of the definitions, formatted same as set_defs.
 def load_set_defs(path):
-    dat = None
-    return dat
+    dat_array = np.genfromtxt(path, dtype=None, delimiter=";", skip_header=True,
+                              names=("set_abrv", "set_name", "ds_id", "mci_id"))
+    return dat_array
 
 # Pre:  path is an input file path. This file lists names and quantities,
 #       delimited by semicolon.
@@ -73,18 +76,30 @@ def load_set_defs(path):
 def read_cards(path, read_format):
     global count_total
     dat = []
-    with open(path, "rb") as i:
+    with open(path, "rb") as f:
         # For deckstats-formatted input:
         if read_format == READ_FORMATS[0]:
-            read = csv.reader(i, dialect="excel")
+            read = csv.reader(f, dialect="excel")
+
+            if csv.Sniffer().has_header(f.read(1024)):
+                f.seek(0, 0)
+                next(read, None)
+            else:
+                f.seek(0, 0)
+
             for r in read:
-                # Skip header row.
-                if r[0] != fields_deckstats[0]:
-                    dat.append([r[1], r[0], r[4]])
+                dat.append([r[1], r[0], r[4]])
 
         # For semicolon-delimited list:
         elif read_format == READ_FORMATS[1]:
-            read = csv.reader(i, delimiter=";")
+            read = csv.reader(f, delimiter=";")
+
+            if csv.Sniffer().has_header(f.read(1024)):
+                f.seek(0, 0)
+                next(read, None)
+            else:
+                f.seek(0, 0)
+
             for r in read:
                 r.append("0")
                 dat.append(r)
@@ -110,8 +125,8 @@ def write_cards(path, write_format, overwrite, fields, output):
     else:
         write_mode = "ab"
 
-    with open(path, write_mode) as o:
-        writer = csv.writer(o, dialect="excel")
+    with open(path, write_mode) as f:
+        writer = csv.writer(f, dialect="excel")
         # Add header line to output if file is empty.
         if os.stat(path).st_size < 1:
             output.insert(0, fields)
@@ -164,10 +179,29 @@ def scrape(input_rows, pattern):
         counter += 1
         name = str(r[0])
         qty = int(r[1])
-        set_id = r[2]
-        print (name + ": x" + str(qty) + " (" + str(set_id) + ")")
-        # Search for exact name match.
-        result = render("http://magiccards.info/query?q=!" + name)
+        set_id = None
+        set_name = None
+        
+        # Convert the deckstats set into a magiccards set.
+        if int(r[2]) > 0:
+            for i in range(0, set_defs.size):
+                if str(r[2]) == str(set_defs[i][2]):
+                    set_id = set_defs[i][3]
+                    set_name = set_defs[i][1]
+                    break
+        else:
+            set_id = "-"
+
+        # Construct query. Use exact name if set is unknown.
+        url_base = "http://magiccards.info/query?q="
+        if not set_id == "-":
+            query_name = name
+            query_set  = " e:" + str(set_id) + "/en"
+        else:
+            query_name = "!" + name
+            query_set  = ""
+        url_full = url_base + query_name + query_set
+        result = render(url_full)
         prices = regex.search(result)
 
         # Display running progress.
@@ -177,7 +211,7 @@ def scrape(input_rows, pattern):
 
         # If exact match was found, add its data to output.
         if prices:
-            dat.append([name, qty, prices.group(1),
+            dat.append([name, qty, set_name, prices.group(1),
                         prices.group(2), prices.group(3),
                         float(prices.group(1)) * qty,
                         float(prices.group(2)) * qty,
@@ -191,11 +225,6 @@ def scrape(input_rows, pattern):
     return dat
 
 def main():
-    # global input_path
-    # global output_path
-    # global read_format
-    # global write_format
-
     # Read in cards to search for, conduct the search, and write out results.
     input_rows = read_cards(input_path, read_format)
     output_rows = scrape(input_rows, SEARCH_PATTERN)
