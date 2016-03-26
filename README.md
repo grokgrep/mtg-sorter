@@ -4,7 +4,7 @@ MTG sorting machine experimentation.
 A collaborative effort by [@awesor](https://github.com/awesor), [@7thGate](https://github.com/7thGate), and [@segfaultmagnet](https://github.com/segfaultmagnet).
 
 ### What It Does
-Reads in a list of card names and quantities, then scrapes for prices based on an exact name match. Currently only returns the latest printing of each card (see magiccards.info [search](http://magiccards.info/search.html) and [syntax](http://magiccards.info/syntax.html)).
+Reads in a list of card names and quantities, then scrapes for prices based on a name and printing match (see magiccards.info [search](http://magiccards.info/search.html) and [syntax](http://magiccards.info/syntax.html)).
 
         Usage:
           getmagiccardprices.py [-hlo] INPUT OUTPUT
