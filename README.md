@@ -30,17 +30,17 @@ Can now search for different editions.
 ### To-Do
 Known causes of misses:
 
-        Non-alphanumeric characters (e.g. Æther Burst, R&D's Secret Lair, Legions of Lim-Dûl). Some of these work when the correct character is used; others do not (sometimes depends on whether input CSV has correct character).
+  Non-alphanumeric characters (e.g. Æther Burst, R&D's Secret Lair, Legions of Lim-Dûl). Some of these work when the correct character is used; others do not (sometimes depends on whether input CSV has correct character).
 
-        Multiple results (e.g. Forest 10e also returns Karplusan Forest 10e). Query does not work with both full name and edition?
+  Multiple results (e.g. Forest 10e also returns Karplusan Forest 10e). Query does not work with both full name and edition?
 
-        No price returned at all (e.g. Purphoros's Emissary).
+  No price returned at all (e.g. Purphoros's Emissary).
 
 Possible solutions:
 
-        Re-try with exact name only on initial miss (still questionable).
+  Re-try with exact name only on initial miss (still questionable).
 
-        Retrieve additional info from [mtgjson](http://mtgjson.com/) via [DeckBrew's API](https://deckbrew.com/api/) (i.e. number within printing), then try exact URL of card (e.g. http://magiccards.info/cstd/en/29.html).
+  Retrieve additional info from [mtgjson](http://mtgjson.com/) via [DeckBrew's API](https://deckbrew.com/api/) (i.e. number within printing), then try exact URL of card (e.g. http://magiccards.info/cstd/en/29.html).
 
 Add exception handling.
 
