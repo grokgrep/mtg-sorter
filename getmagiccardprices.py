@@ -34,7 +34,7 @@ DEBUG = False
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.3"
+__version__ = "0.3a"
 __status__  = "Development"
 
 import os
@@ -46,8 +46,8 @@ from docopt import docopt
 if __name__ == "__main__":
     # Process arguments and check for errors.
     args = docopt(__doc__, help=True, version=__version__)
-    read_path  = os.getcwd() + "\\" + args["<input>"]
-    write_path = os.getcwd() + "\\" + args["<output>"]
+    read_path  = os.path.normpath(os.getcwd() + "/" + args["<input>"])
+    write_path = os.path.normpath(os.getcwd() + "/" + args["<output>"])
     overwrite = False
     if args["-o"]:
         overwrite = True

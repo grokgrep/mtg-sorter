@@ -12,7 +12,7 @@
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.3"
+__version__ = "0.3a"
 __status__  = "Development"
 
 import os
@@ -30,7 +30,7 @@ class GetPrices:
     global FORMATS
     global FORMATS_HEADERS
     global SEARCH_PATTERN
-    CONFIG_FILENAME = "conf.ini"
+    CONFIG_FILENAME = "conf/conf.ini"
     FORMATS = ["deckstats", "excel", "list"]
     FORMATS_HEADERS = [["amount", "card_name", "is_foil", "is_pinned", "set_id"],
                        ["NAME", "QTY", "SET", "LOW (ea.)", "MID (ea.)", "HI (ea.)",
@@ -260,7 +260,8 @@ class GetPrices:
         config_format = config["format"]
 
         # Load set definition file.
-        set_defs_path = os.getcwd() + "\\" + config_files["set_defs"]
+        set_defs_path = os.path.normpath(os.getcwd() + "/" +
+                                         config_files["set_defs"])
 
         # Check for errors!
         try:
