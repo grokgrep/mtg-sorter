@@ -12,14 +12,14 @@
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.3a"
+__version__ = "0.3b"
 __status__  = "Development"
 
 import os
 import sys
 import csv
 import re
-from mtgs_error import Error, InvalidFileError, InvalidFormatError
+from mtgs_error import *
 from mtgs_webrenderer import WebRenderer
 from configobj import ConfigObj
 import numpy as np
@@ -46,6 +46,29 @@ class GetPrices:
         self.count_total   = 0
         self.count_success = 0
         self.count_failed  = 0
+
+    # Conduct full read in, scrape, and write out.
+    def get_prices(self, input_path, output_path, overwrite=False):
+        """Args:
+            input_path  -- string; File path to read the list of cards from.
+            output_path -- string; File path to write the list of cards to.
+            overwrite   -- bool; Idicates whether path should be overwritten or
+                           appended.
+        """
+        self.count_total   = 0
+        self.count_success = 0
+        self.count_failed  = 0
+        input_rows  = []
+        output_rows = []
+        try:
+            input_rows  = self.read_cards(input_path, self.read_format)
+            output_rows = self.scrape(input_rows)
+        except Error as e:
+            print str(e)
+        except Exception as e:
+            print type(e)
+        finally:
+            self.write_cards(output_path, self.write_format, output_rows, overwrite)
 
     # Retrives set definitions used to translate set identifiers, formatted
     # same as set_defs.
@@ -76,21 +99,6 @@ class GetPrices:
         if help:
             print "\n" + str(__doc__)[:-2]
 
-    # Prints summary of price scraping.
-    def summary(self):
-        """Returns summary of last scrape attempt."""
-        success = "Found:\t" + str(self.count_success) + " card(s)."
-        failed = "Missed:\t " + str(self.count_failed) + " card(s)."
-
-        if self.count_success and self.count_failed:
-            return success + "\n" + failed
-        elif self.count_success:
-            return success
-        elif self.count_failed:
-            return failed
-        raise Error("No cards searched for.")
-        return
-
     # Reads from file the list of cards to get prices for.
     def read_cards(self, path, format):
         """Args:
@@ -100,7 +108,6 @@ class GetPrices:
         Returns:
             An array of card names, quantities, and set identifers.
         """
-        self.count_total   = 0
         dat = []
         if not os.path.isfile(path):
             raise InvalidFileError(path)
@@ -132,6 +139,9 @@ class GetPrices:
                     r.append("0")
                     dat.append(r)
 
+        if len(dat) < 1:
+            raise ZeroLengthOutputError
+
         self.count_total = len(dat)
         return dat
 
@@ -144,8 +154,6 @@ class GetPrices:
             A list of card names, quantities, sets, and prices for each.
             Prints progress to console.
         """
-        self.count_success = 0
-        self.count_failed  = 0
         renderer = WebRenderer(sys.argv)
         dat = []
         counter = 0
@@ -155,67 +163,76 @@ class GetPrices:
             sys.stdout.flush()
         regex = re.compile(SEARCH_PATTERN)
 
-        for r in input_rows:
-            counter += 1
-            name = str(r[0])
-            qty  = int(r[1])
-            set_id = None
-            set_name = None
+        try:
+            for r in input_rows:
+                counter += 1
+                name = str(r[0])
+                qty  = int(r[1])
+                set_id = None
+                set_name = None
 
-            # Convert the deckstats set identifier into a magiccards one.
-            if int(r[2]) > 0:
-                for i in range(0, self.set_defs.size):
-                    if str(r[2]) == str(self.set_defs[i][2]):
-                        set_id = self.set_defs[i][3]
-                        set_name = self.set_defs[i][1]
-                        break
-            else:
-                set_id = "n/a"
-                set_name = "n/a"
-
-            # Construct query string.
-            url_base = "http://magiccards.info/query?q="
-            query_name = "\"" + name + "\""
-            if not set_id == "n/a":
-                query_set = " e:" + str(set_id) + "/en"
-            else:
-                query_set = ""
-            query = query_name + query_set
-            result = renderer.render(url_base + query)
-            prices = regex.search(result)
-
-            output_row = []
-            hit = False
-            # If match was found, add its data to output.
-            if prices:
-                output_row = [name, qty, set_name, prices.group(1),
-                              prices.group(2), prices.group(3),
-                              float(prices.group(1)) * qty,
-                              float(prices.group(2)) * qty,
-                              float(prices.group(3)) * qty]
-                self.count_success += 1
-                hit = True
-            else:
-                output_row = [name, qty, set_name]
-                self.count_failed += 1
-
-            # Display running progress.
-            if self.debug:
-                print str(counter) + "/" + str(self.count_total)
-                print "> " + name + ", " + str(r[2]) + " (" + set_id + ")"
-                print "  " + query
-                if hit:
-                    print "  Hit!"
+                # Convert the deckstats set identifier into a magiccards one.
+                if int(r[2]) > 0:
+                    for i in range(0, self.set_defs.size):
+                        if str(r[2]) == str(self.set_defs[i][2]):
+                            set_id = self.set_defs[i][3]
+                            set_name = self.set_defs[i][1]
+                            break
                 else:
-                    print "  Miss!"
-            else:
-                sys.stdout.write("\rFetching... (" + str(counter) + "/" +
-                                 str(self.count_total) + ")")
-                sys.stdout.flush()
+                    set_id = "n/a"
+                    set_name = "n/a"
 
-            dat.append(output_row)
+                # Construct query string.
+                url_base = "http://magiccards.info/query?q="
+                query_name = "\"" + name + "\""
+                if not set_id == "n/a":
+                    query_set = " e:" + str(set_id) + "/en"
+                else:
+                    query_set = ""
+                query = query_name + query_set
+                result = renderer.render(url_base + query)
+                prices = regex.search(result)
 
-        return dat
+                output_row = []
+                hit = False
+                # If match was found, add its data to output.
+                if prices:
+                    output_row = [name, qty, set_name, prices.group(1),
+                                  prices.group(2), prices.group(3),
+                                  float(prices.group(1)) * qty,
+                                  float(prices.group(2)) * qty,
+                                  float(prices.group(3)) * qty]
+                    self.count_success += 1
+                    hit = True
+                else:
+                    output_row = [name, qty, set_name]
+                    self.count_failed += 1
+
+                # Display running progress.
+                if self.debug:
+                    print str(counter) + "/" + str(self.count_total)
+                    print "> " + name + ", " + str(r[2]) + " (" + set_id + ")"
+                    print "  " + query
+                    if hit:
+                        print "  Hit!"
+                    else:
+                        print "  Miss!"
+                else:
+                    sys.stdout.write("\rFetching... (" + str(counter) + "/" +
+                                     str(self.count_total) + ")")
+                    sys.stdout.flush()
+
+                # Push last result onto results.
+                dat.append(output_row)
+
+        except (KeyboardInterrupt, SystemExit):
+            raise InterruptedScrapeError
+        except Exception as e:
+            print "\n" + str(e)
+            raise Error(e)
+        finally:
+            print ""
+            return dat
 
     # Writes to file the cards and corresponding prices.
     def write_cards(self, path, format, output, overwrite=False):
@@ -251,7 +268,21 @@ class GetPrices:
             for r in output:
                 writer.writerow(r)
 
-    def __init__(self, debug=False):
+    # Prints summary of price scraping.
+    def summary(self):
+        """Returns summary of last scrape attempt."""
+        success = "Found:\t" + str(self.count_success) + " card(s)."
+        failed = "Missed:\t " + str(self.count_failed) + " card(s)."
+
+        if self.count_success and self.count_failed:
+            return success + "\n" + failed
+        elif self.count_success:
+            return success
+        elif self.count_failed:
+            return failed
+        return "No cards searched for."
+
+    def __init__(self, read_format, write_format, debug=False):
         self.defaults()
         self.debug = debug
         # Load configuration file info. Make these global later:
@@ -267,9 +298,15 @@ class GetPrices:
         try:
             if not os.path.isfile(set_defs_path):
                 raise InvalidFileError(set_defs_path)
+            if not read_format in FORMATS:
+                raise InvalidFormatError(read_format)
+            if not write_format in FORMATS:
+                raise InvalidFormatError(write_format)
         except Error as e:
             print_error (e, True)
             exit(1)
+        self.read_format = read_format
+        self.write_format = write_format
         self.set_defs  = self.load_set_defs(set_defs_path)
 
     def __del__(self):

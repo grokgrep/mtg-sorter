@@ -34,12 +34,12 @@ DEBUG = False
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.3a"
+__version__ = "0.3b"
 __status__  = "Development"
 
 import os
 import sys
-from mtgs_error import Error
+from mtgs_error import *
 from mtgs_getprices import GetPrices
 from docopt import docopt
 
@@ -58,13 +58,7 @@ if __name__ == "__main__":
     write_format = "excel"
 
     # Get prices!
-    try:
-        gp = GetPrices(DEBUG)
-        input_rows  = gp.read_cards(read_path, read_format)
-        output_rows = gp.scrape(input_rows)
-        gp.write_cards(write_path, write_format, output_rows, overwrite)
-        print "\n" + gp.summary()
-    except Error as e:
-        print e
-        exit(1)
+    gp = GetPrices(read_format, write_format, DEBUG)
+    gp.get_prices(read_path, write_path, overwrite)
+    print gp.summary()
     exit(0)

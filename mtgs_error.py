@@ -23,18 +23,29 @@ class Error(Exception):
     def __init__(self, msg):
         self.msg_ = msg
     def __str__(self):
-        return repr(self.msg_)
+        return repr(type(self).__name__ + ": " + self.msg_)
 
 class InvalidFileError(Error):
     """Should be thrown for an invalid filename."""
     def __init__(self, file):
-        self.file_ = file
-    def __str__(self):
-        return repr(self.file_ + " is not a valid filename.")
+        self.msg_ = repr(file) + " is not a valid filename."
 
 class InvalidFormatError(Error):
     """Should be thrown for an incorrect or undefined import/export format."""
     def __init__(self, format):
-        self.format_ = format
-    def __str__(self):
-        return repr(self.format_ + " is not a valid format.")
+        self.msg_ = repr(format) + " is not a valid format."
+
+class InterruptedScrapeError(Error):
+    """Should be thrown for keyboard or system exit exceptions."""
+    def __init__(self):
+        self.msg_ = repr("Scrape interrupted and existing results written out.")
+
+class ZeroLengthInputError(Error):
+    """Should be thrown if input has now rows."""
+    def __init__(self):
+        self.msg_ = repr("Zero length input.")
+
+class ZeroLengthOutputError(Error):
+    """Should be thrown if input has now rows."""
+    def __init__(self):
+        self.msg_ = repr("Zero length output.")
