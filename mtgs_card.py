@@ -12,7 +12,7 @@
 __author__  = "Matthew Sheridan"
 __credits__ = ["Matthew Sheridan"]
 __date__    = "19 April 2016"
-__version__ = "0.3c"
+__version__ = "0.4"
 __status__  = "Development"
 
 import os
