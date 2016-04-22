@@ -9,7 +9,7 @@
 
 """Renders webpages tailored for use with the MTG-Sorter project."""
 
-__author__ = "Matthew Sheridan"
+__author__  = "Matthew Sheridan"
 __credits__ = ["Matthew Sheridan"]
 __date__    = "28 March 2016"
 __version__ = "0.3"

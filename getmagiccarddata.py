@@ -42,7 +42,7 @@ for root, dirs, files in os.walk("E:\\Magic Card Images\\"):
                     file = open(featureFile, 'w')
                     for item in cardinfo:
                         file.write(item + "\n")
-                    print cardinfo
+                    print(cardinfo)
                     cardinfo = []
                     state = 0
                 elif state != 0:

@@ -1,16 +1,20 @@
 amount,card_name,is_foil,is_pinned,set_id
-1,"Acceptable Losses",0,0,25
-1,"Accursed Centaur",0,0,14
-1,"Aerie Bowmasters",0,0,137
-1,"Afflict",0,0,25
-1,"Afflict",0,0,31
-2,"Agent of Horizons",0,0,128
-1,"Aggressive Urge",0,0,31
-1,"Agility",0,0,33
-1,"Ainok Survivalist",0,0,137
-2,"Air Elemental",0,0,31
-1,"Airborne Aid",0,0,14
-1,"Akki Blizzard-Herder",0,0,55
-1,"Akoum Firebird",0,0,139
-1,"Akroan Jailer",0,0,138
-1,"Alabaster Potion",0,0,4
+1,Acceptable Losses,0,0,25
+1,Accursed Centaur,0,0,14
+1,Aerie Bowmasters,0,0,137
+1,Afflict,0,0,25
+1,Afflict,0,0,31
+2,Agent of Horizons,0,0,128
+1,Aggressive Urge,0,0,31
+1,Agility,0,0,33
+1,Ainok Survivalist,0,0,137
+2,Air Elemental,0,0,31
+1,Airborne Aid,0,0,14
+1,Akki Blizzard-Herder,0,0,55
+1,Akoum Firebird,0,0,139
+1,Akroan Jailer,0,0,138
+1,Alabaster Potion,0,0,4
+1,Æther Burst,0,0,25
+1,Æther Spellbomb,0,0,49
+2,Æthertow,0,0,69
+1,_____,0,0,24
