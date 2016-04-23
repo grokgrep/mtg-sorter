@@ -9,10 +9,6 @@
 
 """Container for MTG card data. Same structure as used by MTG JSON."""
 
-########################################
-# Change this to emulate dict
-########################################
-
 __author__  = "Matthew Sheridan"
 __credits__ = ["Matthew Sheridan"]
 __date__    = "19 April 2016"

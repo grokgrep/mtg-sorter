@@ -12,7 +12,7 @@
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.4b"
+__version__ = "0.4c"
 __status__  = "Development"
 
 import os
@@ -132,8 +132,8 @@ class GetPrices:
         try:
             input_rows  = self.read_cards(input_path)
             ########################################
-            if not self._debug:
-                output_rows = self.scrape(input_rows)
+            # Uncomment once scrape is update.
+            # output_rows = self.scrape(input_rows)
             ########################################
         except Error as e:
             exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -144,7 +144,7 @@ class GetPrices:
             print(type(e))
             traceback.print_tb(exc_traceback, file=sys.stdout)
         finally:
-            self.write_cards(output_path, self._write_format, output_rows, overwrite)
+            self.write_cards(output_path, output_rows, overwrite)
 
     # Reads from file the list of cards to get prices for.
     def read_cards(self, path):
@@ -159,15 +159,6 @@ class GetPrices:
             raise InvalidFileError(path)
 
         with open(path, "r", encoding="utf-8") as file:
-            read = None
-
-            # if format == FORMATS[0]:
-            #     read = csv.reader(f, dialect="excel")
-            # elif format == FORMATS[2]:
-            #     read = csv.reader(f, delimiter=";")
-            # else:
-            #     raise Error(format + " not yet supported as read format.")
-
             # Check for header row.
             header = csv.Sniffer().has_header(str(file.read(1024)))
             file.seek(0)
@@ -289,17 +280,13 @@ class GetPrices:
             return dat
 
     # Writes to file the cards and corresponding prices.
-    def write_cards(self, path, format, output, overwrite=False):
+    def write_cards(self, path, output, overwrite=False):
         """Args:
             path       string; File path to write the list of cards to.
-            format     string; Indentifies the file format of path
-                       (see FORMATS).
             output     array; The list of rows containing cards and prices.
             overwrite  bool; Idicates whether path should be overwritten or
                        appended.
         """
-        if not format in FORMATS:
-            raise InvalidFormatError(format)
 
         if overwrite:
             write_mode = "w"
@@ -307,17 +294,11 @@ class GetPrices:
             write_mode = "a"
 
         with open(path, write_mode) as f:
-            writer = None
-
-            if format == FORMATS[1]:
-                writer = csv.writer(f, dialect="excel")
-            else:
-                raise Error(format + " not yet supported as write format.")
+            writer = csv.writer(f, dialect="excel")
 
             # Add header line if file is empty.
             if os.stat(path).st_size < 1:
-                if format == FORMATS[1]:
-                    output.insert(0, FORMATS_HEADERS[1])
+                output.insert(0, FORMATS_HEADERS[1])
 
             for row in output:
                 writer.writerow(row)
@@ -336,7 +317,7 @@ class GetPrices:
             return failed
         return "No cards searched for."
 
-    def __init__(self, read_format, write_format, debug=False):
+    def __init__(self, debug=False):
         self._defaults()
         self._debug = debug
         # Load configuration file info. Make these global later:
@@ -355,18 +336,15 @@ class GetPrices:
                 raise InvalidFileError(set_defs_path)
             if not os.path.isfile(set_data_path):
                 raise InvalidFileError(set_data_path)
-            if not read_format in FORMATS:
-                raise InvalidFormatError(read_format)
-            if not write_format in FORMATS:
-                raise InvalidFormatError(write_format)
+            #if not read_format in FORMATS:
+            #    raise InvalidFormatError(read_format)
+            #if not write_format in FORMATS:
+            #    raise InvalidFormatError(write_format)
         except Error as e:
             _print_error(e, True)
             exit(1)
 
-        self._read_format  = read_format
-        self._write_format = write_format
+        #self._read_format  = read_format
+        #self._write_format = write_format
         self._set_defs  = self._load_set_defs(set_defs_path)
         self._json_set  = MTGJson(set_data_path)
-
-    def __del__(self):
-        pass

@@ -31,7 +31,7 @@ Options:
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.4b"
+__version__ = "0.4c"
 __status__  = "Development"
 
 import os
@@ -68,8 +68,8 @@ if __name__ == "__main__":
     write_format = "excel"
 
     # Get prices!
-    gp = GetPrices(read_format, write_format, debug)
+    gp = GetPrices(debug)
     gp.get_prices(read_path, write_path, overwrite)
-    # print(gp.summary())
+    print(gp.summary())
 
     exit(0)
