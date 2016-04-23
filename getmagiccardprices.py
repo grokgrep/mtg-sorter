@@ -3,12 +3,12 @@
 # Name:         getmagiccardprices.py
 # Authors:      Geoff, Matthew Sheridan
 # Date:         04 October 2012
-# Revision:     21 April 2016
+# Revision:     23 April 2016
 # Copyright:    (c) Geoff 2012
 # Licence:      <your licence>
 
 """Usage:
-  new.getprices.py [-dlo] <input> [<output>]
+  new.getprices.py [-do] <input> [<output>]
   new.getprices.py -h | --help
   new.getprices.py --version
 
@@ -24,8 +24,6 @@ Arguments:
 Options:
   -d         Enable debugging output.
   -h --help  Show this help message.
-  -l         Use a semicolon-delimited list of names and quantities instead of
-             default deckstats formatting.
   -o         Overwrite OUTPUT file instead of appending.
   --version  Display program version number.
 """
@@ -33,7 +31,7 @@ Options:
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.4"
+__version__ = "0.4a"
 __status__  = "Development"
 
 import os
@@ -53,19 +51,16 @@ if __name__ == "__main__":
         debug = True
     if args["-o"]:
         overwrite = True
-    if args["-l"]:
-        read_format = "list"
-    else:
-        read_format = "deckstats"
     if args["<output>"]:
         write_path = os.path.normpath(os.getcwd() + "/" + args["<output>"])
     else:
         write_path = os.path.splittext(read_path)[0] + "_out.csv"
+    read_format = "deckstats"
     write_format = "excel"
 
     # Get prices!
     gp = GetPrices(read_format, write_format, debug)
     gp.get_prices(read_path, write_path, overwrite)
-    print(gp.summary())
+    # print(gp.summary())
 
     exit(0)

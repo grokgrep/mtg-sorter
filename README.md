@@ -7,7 +7,7 @@ A collaborative effort by [@awesor](https://github.com/awesor), [@7thGate](https
 Reads in a list of card names and quantities, then scrapes for prices based on a name and printing match (see magiccards.info [search](http://magiccards.info/search.html) and [syntax](http://magiccards.info/syntax.html)).
 
         Usage:
-          new.getprices.py [-dlo] <input> [<output>]
+          new.getprices.py [-do] <input> [<output>]
           new.getprices.py -h | --help
           new.getprices.py --version
 
@@ -23,32 +23,29 @@ Reads in a list of card names and quantities, then scrapes for prices based on a
         Options:
           -d         Enable debugging output.
           -h --help  Show this help message.
-          -l         Use a semicolon-delimited list of names and quantities instead of
-                     default deckstats formatting.
           -o         Overwrite OUTPUT file instead of appending.
           --version  Display program version number.
 
 ### New
-Can now search for different editions and partial matches.
+Can now search for exact cards in sets and partial name matches.
 
-### To-Do
+### Issues
 Known causes of misses:
 
-  Multiple results (e.g. Forest 10e also returns Karplusan Forest 10e). Query does not work with both full name and edition?
+  No price returned at all (e.g. Purphoros's Emissary). Try different editions, skip online editions of cards.
 
-  No price returned at all (e.g. Purphoros's Emissary).
+### To-Do
+Update scraping to account for new card container.
 
-Possible solutions:
+Update scraping to build exact URL based on card and set.
 
-  Re-try with exact name only on initial miss (still questionable).
+Add handling for multiple instances of the same card in input (duplicates, foils).
 
-Add exception handling.
-
-Add handling for multiple instances of the same card name (duplicates, foils).
-
-Improve formatting for deckstats.net input (add: .dec deck format).
+Add better exception handling!
 
 Clean up documentation (what is Python style??).
+
+Improve formatting for deckstats.net input (add: .dec deck format).
 
 ### Dependencies and Resources
 [ConfigObj](http://www.voidspace.org.uk/python/configobj.html)

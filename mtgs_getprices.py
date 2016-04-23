@@ -3,7 +3,7 @@
 # Name:         mtgs_getprices.py
 # Authors:      Geoff, Matthew Sheridan
 # Date:         04 October 2012
-# Revision:     21 April 2016
+# Revision:     23 April 2016
 # Copyright:    (c) Geoff 2012
 # Licence:      <your licence>
 
@@ -12,12 +12,13 @@
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.4"
+__version__ = "0.4a"
 __status__  = "Development"
 
 import os
 import sys
 import codecs
+import copy
 import csv
 import re
 import traceback
@@ -34,54 +35,82 @@ class GetPrices:
     global FORMATS_HEADERS
     global SEARCH_PATTERN
     CONFIG_FILENAME = "conf/conf.ini"
-    FORMATS = ["deckstats", "excel", "list"]
+    FORMATS = ["deckstats", "excel"]
     FORMATS_HEADERS = [["amount", "card_name", "is_foil", "is_pinned", "set_id"],
-                       ["CARD NAME", "QTY", "SET", "SET NAME", "LOW (ea.)", "MID (ea.)", "HI (ea.)",
-                        "LOW", "MID", "HI"],
-                       ["card_name", "amount"]]
+                       ["CARD NAME", "QTY", "SET", "SET NAME", "LOW (ea.)", "MID (ea.)", "HI (ea.)", "LOW", "MID", "HI"]]
     SEARCH_PATTERN = "TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)"
 
-    def __defaults(self):
-        self.__debug         = None
-        self.__read_format   = None
-        self.__write_format  = None
-        self.__set_defs      = None
-        self.__json_set      = None
-        self.__count_total   = 0
-        self.__count_success = 0
-        self.__count_failed  = 0
+    # Set default values.
+    def _defaults(self):
+        self._debug         = None
+        self._read_format   = None
+        self._write_format  = None
+        self._set_defs      = None
+        self._json_set      = None
+        self._count_total   = 0
+        self._count_success = 0
+        self._count_failed  = 0
+
+    # Converts set codes. Currently only does deckstats to setCode.
+    def _convert_setcode(self, code, in_type="deckstatsCode", out_type="setCode"):
+        """Args:
+            code      The code to convert.
+            in_type   The type of code to convert. [default="deckstatsCode"]
+            out_type  The type of code to return. [default="setCode"]
+
+        Returns:
+            Converted set code of type specified by out_type.
+        """
+        new_code = ""
+        cols = {
+            "name": 0,
+            "setCode": 1,
+            "gathererCode": 2,
+            "oldCode": 3,
+            "magicCardsInfoCode": 4,
+            "deckstatsCode": 5
+        }
+        if not in_type in cols:
+            raise Error("Invalid set type conversion: " + in_type)
+        if not out_type in cols:
+            raise Error("Invalid set type conversion: " + out_type)
+
+        in_col = cols[in_type]
+        out_col = cols[out_type]
+        for row in self._set_defs:
+            if row[in_col] == code:
+                new_code = row[out_col]
+        return new_code
 
     # Retrives set definitions used to translate set identifiers, formatted
     # same as set_defs.
-    def __load_set_defs(self, path):
+    def _load_set_defs(self, path):
         """Args:
-            path    -- string; File path to definition file set_defs.csv.
+            path  string; File path to definition file set_defs.csv.
 
         Returns:
-            numpy array containing common set abbreviations, full set names,
-            deckstats.net ID, and magiccards.info abbreviation.
+            Returns list of conversion lists.
         """
         dat = []
         try:
-            with open(path, "rb") as f:
+            with open(path, "r") as file:
                 # Check for header row.
-                header = csv.Sniffer().has_header(str(f.read(1024)))
-                f.seek(0)
+                header = csv.Sniffer().has_header(str(file.read(1024)))
+                file.seek(0)
                 if header:
-                    next(f)
-
-                for r in f:
-                    dat.append([r[1], r[0], r[5], r[4]])
-
+                    next(file)
+                reader = csv.reader(file, dialect="excel")
+                for row in reader:
+                    dat.append(row)
         except Error as e:
             raise e
         return dat
 
     # Prints error message.
-    def __print_error(self, err, help=False):
+    def _print_error(self, err, help=False):
         """Args:
-            msg     -- string; Error message to print.
-            help    -- bool; Print help message yes/no.
+            msg   string; Error message to print.
+            help  bool; Print help message yes/no.
         """
         print(err)
         if help:
@@ -90,20 +119,20 @@ class GetPrices:
     # Conduct full read in, scrape, and write out.
     def get_prices(self, input_path, output_path, overwrite=False):
         """Args:
-            input_path  -- string; File path to read the list of cards from.
-            output_path -- string; File path to write the list of cards to.
-            overwrite   -- bool; Idicates whether path should be overwritten or
-                           appended.
+            input_path   string; File path to read the list of cards from.
+            output_path  string; File path to write the list of cards to.
+            overwrite    bool; Idicates whether path should be overwritten or
+                         appended.
         """
-        self.__count_total   = 0
-        self.__count_success = 0
-        self.__count_failed  = 0
+        self._count_total   = 0
+        self._count_success = 0
+        self._count_failed  = 0
         input_rows  = []
         output_rows = []
         try:
-            input_rows  = self.read_cards(input_path, self.__read_format)
+            input_rows  = self.read_cards(input_path)
             ########################################
-            if not self.__debug:
+            if not self._debug:
                 output_rows = self.scrape(input_rows)
             ########################################
         except Error as e:
@@ -115,68 +144,54 @@ class GetPrices:
             print(type(e))
             traceback.print_tb(exc_traceback, file=sys.stdout)
         finally:
-            self.write_cards(output_path, self.__write_format, output_rows, overwrite)
+            self.write_cards(output_path, self._write_format, output_rows, overwrite)
 
     # Reads from file the list of cards to get prices for.
-    def read_cards(self, path, format):
+    def read_cards(self, path):
         """Args:
-            path    -- string; File path to read the list of cards from.
-            format  -- int; Indentifies the file format of path (see FORMATS).
+            path  string; File path to read the list of cards from.
 
         Returns:
-            An array of cards and quantities.
+            A matrix of cards and quantities.
         """
-        dat = dict()
+        dat = []
         if not os.path.isfile(path):
             raise InvalidFileError(path)
-        if not format in FORMATS:
-            raise InvalidFormatError(format)
 
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as file:
             read = None
 
-            if format == FORMATS[0]:
-                read = csv.reader(f, dialect="excel")
-            elif format == FORMATS[2]:
-                read = csv.reader(f, delimiter=";")
-            else:
-                raise Error(format + " not yet supported as read format.")
+            # if format == FORMATS[0]:
+            #     read = csv.reader(f, dialect="excel")
+            # elif format == FORMATS[2]:
+            #     read = csv.reader(f, delimiter=";")
+            # else:
+            #     raise Error(format + " not yet supported as read format.")
 
             # Check for header row.
-            if csv.Sniffer().has_header(f.read(1024)):
-                f.seek(0, 0)
-                next(read, None)
-            else:
-                f.seek(0, 0)
+            header = csv.Sniffer().has_header(str(file.read(1024)))
+            file.seek(0)
+            if header:
+                next(file)
 
-            for r in read:
-                card = MTGCard()
-                name     = ""
-                setCode  = ""
-                qty = 0
-                if format == "deckstats":
-                    name = r[1]
-                    for i in range(0, len(self.__set_defs)):
-                        if str(r[4]) == str(self.__set_defs[i][2]):
-                            setCode = self.__set_defs[i][1]
-                    qty = r[0]
-                elif format == "list":
-                    name = r[0]
-                    qty = r[1]
-                find = self.__json_set.find_partial_name(name)
-                for key in find:
-                    print(key + ": " + find[key]["name"] + ", " + find[key]["setCode"])
-                card.name = name
-                card.setCode = setCode
-                dat[card] = qty
-                ########################################
-                print(str(card) + " (" + str(qty) + ")")
-                ########################################
+            reader = csv.reader(file, dialect="excel")
+            for row in reader:
+                name = row[1]
+                qty  = row[0]
+                setCode = self._convert_setcode(row[4])
+                match = self._json_set.find_card(name, setCode)
+                if match:
+                    dat.append([match, qty])
+                else:
+                    print("Did not match " + repr(name) + " (" + repr(setCode) + ")")
+                    # Try partial match w/ most recent set.
 
         if len(dat) < 1:
             raise ZeroLengthOutputError
-
-        self.__count_total = len(dat)
+        self._count_total = len(dat)
+        for d in dat:
+            for e in d:
+                print(str(e))
         return dat
 
     ########################################
@@ -185,7 +200,7 @@ class GetPrices:
     # Scrapes magiccards.info for card prices.
     def scrape(self, input_rows):
         """Args:
-            input_rows  -- array; The list of card names, quantities, and set identifiers to search for.
+            input_rows  array; The list of card names, quantities, and set identifiers to search for.
 
         Returns:
             A list of card names, quantities, sets, and prices for each.
@@ -195,16 +210,16 @@ class GetPrices:
         dat = []
         counter = 0
         
-        if not self.__debug:
+        if not self._debug:
             sys.stdout.write("Fetching...")
             sys.stdout.flush()
         regex = re.compile(SEARCH_PATTERN)
 
         try:
-            for r in input_rows:
+            for row in input_rows:
                 counter += 1
-                name = str(r[0])
-                qty  = int(r[1])
+                name = str(row[0])
+                qty  = int(row[1])
                 set_abv = None
                 set_id = None
                 set_name = None
@@ -212,12 +227,12 @@ class GetPrices:
                 hit = False
 
                 # Convert the deckstats set identifier into a magiccards one.
-                if int(r[2]) > 0:
-                    for i in range(0, len(self.__set_defs)):
-                        if str(r[2]) == str(self.__set_defs[i][2]):
-                            set_abv = self.__set_defs[i][0]
-                            set_id = self.__set_defs[i][3]
-                            set_name = self.__set_defs[i][1]
+                if int(row[2]) > 0:
+                    for i in range(0, len(self._set_defs)):
+                        if str(row[2]) == str(self._set_defs[i][2]):
+                            set_abv = self._set_defs[i][0]
+                            set_id = self._set_defs[i][3]
+                            set_name = self._set_defs[i][1]
                             break
                 else:
                     set_id = "n/a"
@@ -241,16 +256,16 @@ class GetPrices:
                                   float(prices.group(1)) * qty,
                                   float(prices.group(2)) * qty,
                                   float(prices.group(3)) * qty]
-                    self.__count_success += 1
+                    self._count_success += 1
                     hit = True
                 else:
                     output_row = [name, qty, set_abv]
-                    self.__count_failed += 1
+                    self._count_failed += 1
 
                 # Display running progress.
-                if self.__debug:
-                    print(str(counter) + "/" + str(self.__count_total))
-                    print("> " + name + ", " + str(r[2]) + " (" + set_id + ")")
+                if self._debug:
+                    print(str(counter) + "/" + str(self._count_total))
+                    print("> " + name + ", " + str(row[2]) + " (" + set_id + ")")
                     print("  " + query)
                     if hit:
                         print("  Hit!")
@@ -258,7 +273,7 @@ class GetPrices:
                         print("  Miss!")
                 else:
                     sys.stdout.write("\rFetching... (" + str(counter) + "/" +
-                                     str(self.__count_total) + ")")
+                                     str(self._count_total) + ")")
                     sys.stdout.flush()
 
                 # Push last result onto results.
@@ -276,12 +291,12 @@ class GetPrices:
     # Writes to file the cards and corresponding prices.
     def write_cards(self, path, format, output, overwrite=False):
         """Args:
-            path        -- string; File path to write the list of cards to.
-            format      -- string; Indentifies the file format of path
-                           (see FORMATS).
-            output      -- array; The list of rows containing cards and prices.
-            overwrite   -- bool; Idicates whether path should be overwritten or
-                           appended.
+            path       string; File path to write the list of cards to.
+            format     string; Indentifies the file format of path
+                       (see FORMATS).
+            output     array; The list of rows containing cards and prices.
+            overwrite  bool; Idicates whether path should be overwritten or
+                       appended.
         """
         if not format in FORMATS:
             raise InvalidFormatError(format)
@@ -304,26 +319,26 @@ class GetPrices:
                 if format == FORMATS[1]:
                     output.insert(0, FORMATS_HEADERS[1])
 
-            for r in output:
-                writer.writerow(r)
+            for row in output:
+                writer.writerow(row)
 
     # Prints summary of price scraping.
     def summary(self):
         """Returns summary of last scrape attempt."""
-        success = "Found:\t" + str(self.__count_success) + " card(s)."
-        failed = "Missed:\t " + str(self.__count_failed) + " card(s)."
+        success = "Found:\t" + str(self._count_success) + " card(s)."
+        failed = "Missed:\t " + str(self._count_failed) + " card(s)."
 
-        if self.__count_success and self.__count_failed:
+        if self._count_success and self._count_failed:
             return success + "\n" + failed
-        elif self.__count_success:
+        elif self._count_success:
             return success
-        elif self.__count_failed:
+        elif self._count_failed:
             return failed
         return "No cards searched for."
 
     def __init__(self, read_format, write_format, debug=False):
-        self.__defaults()
-        self.__debug = debug
+        self._defaults()
+        self._debug = debug
         # Load configuration file info. Make these global later:
         config = ConfigObj(CONFIG_FILENAME)
         config_files  = config["files"]
@@ -345,13 +360,13 @@ class GetPrices:
             if not write_format in FORMATS:
                 raise InvalidFormatError(write_format)
         except Error as e:
-            __print_error (e, True)
+            _print_error(e, True)
             exit(1)
 
-        self.__read_format = read_format
-        self.__write_format = write_format
-        self.__set_defs  = self.__load_set_defs(set_defs_path)
-        self.__json_set  = MTGJson(set_data_path)
+        self._read_format  = read_format
+        self._write_format = write_format
+        self._set_defs  = self._load_set_defs(set_defs_path)
+        self._json_set  = MTGJson(set_data_path)
 
     def __del__(self):
         pass
