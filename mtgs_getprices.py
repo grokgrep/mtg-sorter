@@ -12,7 +12,7 @@
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.4a"
+__version__ = "0.4b"
 __status__  = "Development"
 
 import os
@@ -182,16 +182,16 @@ class GetPrices:
                 match = self._json_set.find_card(name, setCode)
                 if match:
                     dat.append([match, qty])
+                    if self._debug:
+                        print("Match: " + str(match))
                 else:
-                    print("Did not match " + repr(name) + " (" + repr(setCode) + ")")
+                    if self._debug:
+                        print(" MISS: " + repr(name) + " (" + repr(setCode) + ")")
                     # Try partial match w/ most recent set.
 
         if len(dat) < 1:
             raise ZeroLengthOutputError
         self._count_total = len(dat)
-        for d in dat:
-            for e in d:
-                print(str(e))
         return dat
 
     ########################################

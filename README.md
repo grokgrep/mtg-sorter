@@ -34,6 +34,8 @@ Known causes of misses:
 
   No price returned at all (e.g. Purphoros's Emissary). Try different editions, skip online editions of cards.
 
+  Exact name duplicates? (e.g. Forest OGW misses, Forest SOI hits)
+
 ### To-Do
 Update scraping to account for new card container.
 

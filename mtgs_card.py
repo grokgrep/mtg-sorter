@@ -16,7 +16,7 @@
 __author__  = "Matthew Sheridan"
 __credits__ = ["Matthew Sheridan"]
 __date__    = "19 April 2016"
-__version__ = "0.4a"
+__version__ = "0.4b"
 __status__  = "Development"
 
 import os
@@ -87,7 +87,9 @@ class MTGCard:
         return str(self)
 
     def __str__(self):
-        return str(self.__getitem__("name")) + " (" + str(self.__getitem__("multiverseid")) + ")"
+        return (str(self.__getitem__("name")) + " (" +
+                str(self.__getitem__("setCode")) + ") (" +
+                str(self.__getitem__("multiverseid")) + ")")
 
     def __init__(self, id="", name="", setCode=""):
         self._default()

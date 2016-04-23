@@ -31,7 +31,7 @@ Options:
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.4a"
+__version__ = "0.4b"
 __status__  = "Development"
 
 import os
@@ -42,19 +42,28 @@ from mtgs_getprices import GetPrices
 from docopt import docopt
 
 if __name__ == "__main__":
-    # Process arguments and check for errors.
-    args = docopt(__doc__, help=True, version=__version__)
-    read_path  = os.path.normpath(os.getcwd() + "/" + args["<input>"])
     debug = False
     overwrite = False
+
+    # Process arguments and check for errors.
+    args = docopt(__doc__, help=True, version=__version__)
+
     if args["-d"]:
         debug = True
     if args["-o"]:
         overwrite = True
+
+    read_path  = os.path.normpath(os.getcwd() + "/" + args["<input>"])
+    if not os.path.isfile(read_path):
+        raise InvalidFileError(read_path)
+
     if args["<output>"]:
         write_path = os.path.normpath(os.getcwd() + "/" + args["<output>"])
+        if not os.path.isfile(write_path):
+            raise InvalidFileError(write_path)
     else:
-        write_path = os.path.splittext(read_path)[0] + "_out.csv"
+        write_path = os.path.splitext(read_path)[0] + "_out.csv"
+
     read_format = "deckstats"
     write_format = "excel"
 
