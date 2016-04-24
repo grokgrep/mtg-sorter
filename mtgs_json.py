@@ -12,7 +12,7 @@
 __author__  = "Matthew Sheridan"
 __credits__ = ["Matthew Sheridan"]
 __date__    = "29 March 2016"
-__version__ = "0.4a"
+__version__ = "0.4d"
 __status__  = "Development"
 
 import os
@@ -37,7 +37,20 @@ class MTGJson:
                 if name.lower() == card["name"].lower() and setCode == set[1]["code"]:
                     for item in card:
                         dat[item] = card[item]
-                        dat["setCode"] = set[1]["code"]
+                    ##################################################
+                    # Uncomment to dump cards' "numbers" and "mciNumbers" fields.
+                    # There are a bunch of cards in MTG JSON's data that are missing
+                    # one or both, or which have mismatched entries.
+                    #with open(os.getcwd() + "/dump.txt", "a") as file:
+                    #    file.write(repr(card["name"]) + ":\n")
+                    #    for item in card:
+                    #        if "number" in item.lower():
+                    #            file.write("  " + repr(item) + ": " +
+                    #                       repr(card[item]) + "\n")
+                    #        dat[item] = card[item]
+                    ##################################################
+
+                    dat["setCode"] = set[1]["code"]
                     return dat
         return None
 
