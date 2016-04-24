@@ -313,6 +313,8 @@ class GetPrices:
             for row in output:
                 writer.writerow(row)
 
+        print("Wrote to " + path)
+
     # Prints summary of price scraping.
     def summary(self):
         """Returns summary of last scrape attempt."""

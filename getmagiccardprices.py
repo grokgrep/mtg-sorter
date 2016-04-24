@@ -59,8 +59,6 @@ if __name__ == "__main__":
 
     if args["<output>"]:
         write_path = os.path.normpath(os.getcwd() + "/" + args["<output>"])
-        if not os.path.isfile(write_path):
-            raise InvalidFileError(write_path)
     else:
         write_path = os.path.splitext(read_path)[0] + "_out.csv"
 
