@@ -36,11 +36,9 @@ Known causes of misses:
 
   Exact name duplicates? (e.g. Forest OGW misses, Forest SOI hits)
 
+  Inconsistent MTG JSON data means that some exact URLs can be used.
+
 ### To-Do
-Update scraping to account for new card container.
-
-Update scraping to build exact URL based on card and set.
-
 Add handling for multiple instances of the same card in input (duplicates, foils).
 
 Add better exception handling!
