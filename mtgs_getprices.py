@@ -316,8 +316,8 @@ class GetPrices:
     # Prints summary of price scraping.
     def summary(self):
         """Returns summary of last scrape attempt."""
-        success = "Found:\t" + str(self._count_success) + " card(s)."
-        failed = "Missed:\t " + str(self._count_failed) + " card(s):"
+        success = "Found:  " + str(self._count_success) + " card(s)."
+        failed = "Missed: " + str(self._count_failed) + " card(s):"
         for miss in self._list_failed:
             failed += "\n  " + repr(miss[0]) + " (" + repr(miss[1]) + ")"
 
