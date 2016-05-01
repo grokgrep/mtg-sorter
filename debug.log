@@ -1,0 +1,295 @@
+2016-05-01 19:35:23.494691: Reading from C:\Git\mtg-sorter\samples\sample.csv
+2016-05-01 19:35:23.607698: Could not match 'Akoum Refuge' in set ''
+2016-05-01 19:35:24.206732: Could not match 'Erase (Not the' in set 'UNH'
+2016-05-01 19:35:24.292737: Could not match 'Forest' in set 'OGW'
+2016-05-01 19:35:24.919773: Could not match 'Smash to Smithereens' in set ''
+2016-05-01 19:35:25.003778: Could not match 'Swamp' in set 'OGW'
+2016-05-01 19:35:25.807824: 1/144  Hit:  _____ (UNH)
+2016-05-01 19:35:25.807824: 	http://magiccards.info/uh/en/23.html
+2016-05-01 19:35:26.223847: 2/144  Hit:  Æther Burst (ODY)
+2016-05-01 19:35:26.223847: 	http://magiccards.info/od/en/60.html
+2016-05-01 19:35:26.480862: 3/144  Hit:  Æther Spellbomb (MRD)
+2016-05-01 19:35:26.480862: 	http://magiccards.info/mi/en/141.html
+2016-05-01 19:35:26.718876: 4/144  Hit:  Æthertow (SHM)
+2016-05-01 19:35:26.718876: 	http://magiccards.info/shm/en/136.html
+2016-05-01 19:35:26.974890: 5/144  Hit:  Afflict (ODY)
+2016-05-01 19:35:26.974890: 	http://magiccards.info/od/en/115.html
+2016-05-01 19:35:27.197903: 6/144  Hit:  Afflict (10E)
+2016-05-01 19:35:27.197903: 	http://magiccards.info/10e/en/125.html
+2016-05-01 19:35:27.660930: 7/144  Hit:  Akki Blizzard-Herder (BOK)
+2016-05-01 19:35:27.660930: 	http://magiccards.info/bok/en/91.html
+2016-05-01 19:35:27.902943: 8/144  Hit:  Alabaster Potion (4ED)
+2016-05-01 19:35:27.902943: 	http://magiccards.info/query?q="Alabaster Potion" e:4e/en
+2016-05-01 19:35:28.215961: 9/144  Hit:  Alabaster Wall (MMQ)
+2016-05-01 19:35:28.215961: 	http://magiccards.info/mm/en/2.html
+2016-05-01 19:35:28.478976: 10/144  Hit:  Aliban's Tower (HML)
+2016-05-01 19:35:28.478976: 	http://magiccards.info/query?q="Aliban's Tower" e:hl/en
+2016-05-01 19:35:28.716990: 11/144  Hit:  Ancient Crab (OGW)
+2016-05-01 19:35:28.716990: 	http://magiccards.info/ogw/en/50.html
+2016-05-01 19:35:28.956004: 12/144  Hit:  Andradite Leech (INV)
+2016-05-01 19:35:28.956004: 	http://magiccards.info/in/en/93.html
+2016-05-01 19:35:29.280022: 13/144  Hit:  Angelfire Crusader (APC)
+2016-05-01 19:35:29.280022: 	http://magiccards.info/ap/en/1.html
+2016-05-01 19:35:29.658044: 14/144  Hit:  Angelic Blessing (9ED)
+2016-05-01 19:35:29.658044: 	http://magiccards.info/9e/en/2.html
+2016-05-01 19:35:29.934060: 15/144  Hit:  Angelic Page (8ED)
+2016-05-01 19:35:29.934060: 	http://magiccards.info/8e/en/2.html
+2016-05-01 19:35:30.216076: 16/144  Hit:  Apothecary Initiate (SHM)
+2016-05-01 19:35:30.216076: 	http://magiccards.info/shm/en/1.html
+2016-05-01 19:35:30.472090: 17/144  Hit:  Aqueous Form (THS)
+2016-05-01 19:35:30.472090: 	http://magiccards.info/ths/en/39.html
+2016-05-01 19:35:30.722105: 18/144  Hit:  Ashnod's Altar (ATQ)
+2016-05-01 19:35:30.722105: 	http://magiccards.info/query?q="Ashnod's Altar" e:aq/en
+2016-05-01 19:35:30.952118: 19/144  Hit:  Assault Zeppelid (DIS)
+2016-05-01 19:35:30.952118: 	http://magiccards.info/di/en/103.html
+2016-05-01 19:35:31.345140: 20/144  Hit:  Atarka Beastbreaker (DTK)
+2016-05-01 19:35:31.345140: 	http://magiccards.info/dtk/en/174.html
+2016-05-01 19:35:31.714161: 21/144  Hit:  Atarka Efreet (DTK)
+2016-05-01 19:35:31.714161: 	http://magiccards.info/dtk/en/128.html
+2016-05-01 19:35:32.160187: 22/144  Hit:  Atarka Pummeler (DTK)
+2016-05-01 19:35:32.160187: 	http://magiccards.info/dtk/en/129.html
+2016-05-01 19:35:32.509207: 23/144  Hit:  Atarka's Command (DTK)
+2016-05-01 19:35:32.509207: 	http://magiccards.info/dtk/en/213.html
+2016-05-01 19:35:32.750221: 24/144  Hit:  Aven Sunstriker (DTK)
+2016-05-01 19:35:32.750221: 	http://magiccards.info/dtk/en/5.html
+2016-05-01 19:35:32.981234: 25/144  Hit:  Aven Sunstriker (DTK)
+2016-05-01 19:35:32.981234: 	http://magiccards.info/dtk/en/5.html
+2016-05-01 19:35:33.631271: 26/144  Hit:  Azusa, Lost but Seeking (CHK)
+2016-05-01 19:35:33.631271: 	http://magiccards.info/chk/en/201.html
+2016-05-01 19:35:34.070296: 27/144  Hit:  Barren Moor (ONS)
+2016-05-01 19:35:34.070296: 	http://magiccards.info/on/en/312.html
+2016-05-01 19:35:34.324311: 28/144  Hit:  Battle Mastery (LRW)
+2016-05-01 19:35:34.324311: 	http://magiccards.info/lw/en/5.html
+2016-05-01 19:35:34.575325: 29/144  Hit:  Beastmaster's Magemark (GPT)
+2016-05-01 19:35:34.575325: 	http://magiccards.info/gp/en/80.html
+2016-05-01 19:35:34.808338: 30/144  Hit:  Belbe's Armor (NMS)
+2016-05-01 19:35:34.808338: 	http://magiccards.info/ne/en/126.html
+2016-05-01 19:35:35.052352: 31/144  Hit:  Benalish Missionary (WTH)
+2016-05-01 19:35:35.052352: 	http://magiccards.info/query?q="Benalish Missionary" e:wl/en
+2016-05-01 19:35:35.362370: 32/144  Hit:  Benthic Infiltrator (BFZ)
+2016-05-01 19:35:35.362370: 	http://magiccards.info/bfz/en/55.html
+2016-05-01 19:35:35.873399: 33/144  Hit:  Blighted Fen (BFZ)
+2016-05-01 19:35:35.873399: 	http://magiccards.info/bfz/en/230.html
+2016-05-01 19:35:36.572439: 34/144  Hit:  Blighted Woodland (BFZ)
+2016-05-01 19:35:36.572439: 	http://magiccards.info/bfz/en/233.html
+2016-05-01 19:35:36.944461: 35/144  Hit:  Blightsoil Druid (MOR)
+2016-05-01 19:35:36.944461: 	http://magiccards.info/mt/en/59.html
+2016-05-01 19:35:37.282480: 36/144  Hit:  Bloodfell Caves (FRF)
+2016-05-01 19:35:37.282480: 	http://magiccards.info/frf/en/165.html
+2016-05-01 19:35:37.637500: 37/144  Hit:  Blossoming Sands (KTK)
+2016-05-01 19:35:37.637500: 	http://magiccards.info/ktk/en/231.html
+2016-05-01 19:35:38.044524: 38/144  Hit:  Bog Raiders (USG)
+2016-05-01 19:35:38.044524: 	http://magiccards.info/us/en/119.html
+2016-05-01 19:35:38.406544: 39/144  Hit:  Bow of Nylea (THS)
+2016-05-01 19:35:38.406544: 	http://magiccards.info/ths/en/153.html
+2016-05-01 19:35:38.668559: 40/144  Hit:  Bronze Horse (LEG)
+2016-05-01 19:35:38.668559: 	http://magiccards.info/query?q="Bronze Horse" e:lg/en
+2016-05-01 19:35:38.939575: 41/144  Hit:  Chieftain en-Dal (NMS)
+2016-05-01 19:35:38.939575: 	http://magiccards.info/ne/en/4.html
+2016-05-01 19:35:39.494606: 42/144  Hit:  Cho-Manno's Blessing (MMQ)
+2016-05-01 19:35:39.494606: 	http://magiccards.info/mm/en/12.html
+2016-05-01 19:35:39.896629: 43/144  Hit:  Cinder Crawler (EXO)
+2016-05-01 19:35:39.896629: 	http://magiccards.info/ex/en/80.html
+2016-05-01 19:35:40.158644: 44/144  Hit:  Circle of Protection: Black (4ED)
+2016-05-01 19:35:40.158644: 	http://magiccards.info/query?q="Circle of Protection: Black" e:4e/en
+2016-05-01 19:35:40.405659: 45/144  Hit:  Cloud Elemental (VIS)
+2016-05-01 19:35:40.405659: 	http://magiccards.info/query?q="Cloud Elemental" e:vi/en
+2016-05-01 19:35:40.668674: 46/144  Hit:  Counterspell (ICE)
+2016-05-01 19:35:40.668674: 	http://magiccards.info/query?q="Counterspell" e:ia/en
+2016-05-01 19:35:40.914688: 47/144  Hit:  Cut the Earthly Bond (SOK)
+2016-05-01 19:35:40.914688: 	http://magiccards.info/sok/en/32.html
+2016-05-01 19:35:41.173703: 48/144  Hit:  Cutthroat il-Dal (FUT)
+2016-05-01 19:35:41.173703: 	http://magiccards.info/fut/en/64.html
+2016-05-01 19:35:41.542724: 49/144  Hit:  Dampen Thought (MMA)
+2016-05-01 19:35:41.542724: 	http://magiccards.info/mma/en/39.html
+2016-05-01 19:35:41.975748: 50/144  Hit:  Death Spark (ALL)
+2016-05-01 19:35:41.975748: 	http://magiccards.info/query?q="Death Spark" e:ai/en
+2016-05-01 19:35:42.387772: 51/144  Hit:  Defender en-Vec (NMS)
+2016-05-01 19:35:42.387772: 	http://magiccards.info/ne/en/5.html
+2016-05-01 19:35:42.636786: 52/144  Hit:  Dispel (BFZ)
+2016-05-01 19:35:42.636786: 	http://magiccards.info/bfz/en/76.html
+2016-05-01 19:35:42.886800: 53/144  Hit:  Dripping-Tongue Zubera (CHK)
+2016-05-01 19:35:42.886800: 	http://magiccards.info/chk/en/206.html
+2016-05-01 19:35:43.322825: 54/144  Hit:  Elvish Visionary (ORI)
+2016-05-01 19:35:43.322825: 	http://magiccards.info/ori/en/175.html
+2016-05-01 19:35:43.688846: 55/144  Hit:  Ember-Fist Zubera (CHK)
+2016-05-01 19:35:43.688846: 	http://magiccards.info/chk/en/166.html
+2016-05-01 19:35:44.027866: 56/144  Hit:  Evolving Wilds (DTK)
+2016-05-01 19:35:44.027866: 	http://magiccards.info/dtk/en/248.html
+2016-05-01 19:35:44.444890: 57/144  Hit:  Evolving Wilds (BFZ)
+2016-05-01 19:35:44.444890: 	http://magiccards.info/bfz/en/236.html
+2016-05-01 19:35:44.785909: 58/144  Hit:  Fishliver Oil (ARN)
+2016-05-01 19:35:44.785909: 	http://magiccards.info/query?q="Fishliver Oil" e:an/en
+2016-05-01 19:35:45.041924: 59/144  Hit:  Floating-Dream Zubera (CHK)
+2016-05-01 19:35:45.041924: 	http://magiccards.info/chk/en/61.html
+2016-05-01 19:35:45.357942: 60/144  Hit:  Forest (MMQ)
+2016-05-01 19:35:45.357942: 	http://magiccards.info/mm/en/347.html
+2016-05-01 19:35:45.635958: 61/144  Hit:  Forest (ONS)
+2016-05-01 19:35:45.635958: 	http://magiccards.info/on/en/347.html
+2016-05-01 19:35:45.906973: 62/144  Miss: Forest (SOI)
+2016-05-01 19:35:45.906973: 	http://magiccards.info/soi/en/295.html
+2016-05-01 19:35:46.172988: 63/144  Hit:  Frozen Solid (SCG)
+2016-05-01 19:35:46.172988: 	http://magiccards.info/sc/en/36.html
+2016-05-01 19:35:46.402002: 64/144  Hit:  Frozen Solid (CSP)
+2016-05-01 19:35:46.402002: 	http://magiccards.info/cs/en/35.html
+2016-05-01 19:35:46.656016: 65/144  Hit:  Fugitive Wizard (LGN)
+2016-05-01 19:35:46.656016: 	http://magiccards.info/le/en/38.html
+2016-05-01 19:35:46.962034: 66/144  Hit:  Gelatinous Genesis (ROE)
+2016-05-01 19:35:46.962034: 	http://magiccards.info/roe/en/183.html
+2016-05-01 19:35:47.551067: 67/144  Hit:  Gerrard's Command (PLS)
+2016-05-01 19:35:47.551067: 	http://magiccards.info/ps/en/109.html
+2016-05-01 19:35:48.185104: 68/144  Hit:  Giant Spider (3ED)
+2016-05-01 19:35:48.185104: 	http://magiccards.info/query?q="Giant Spider" e:rv/en
+2016-05-01 19:35:48.460119: 69/144  Hit:  Golgari Rotwurm (RAV)
+2016-05-01 19:35:48.460119: 	http://magiccards.info/rav/en/210.html
+2016-05-01 19:35:48.841141: 70/144  Hit:  Grove of the Guardian (RTR)
+2016-05-01 19:35:48.841141: 	http://magiccards.info/rtr/en/240.html
+2016-05-01 19:35:49.103156: 71/144  Hit:  Grove of the Guardian (RTR)
+2016-05-01 19:35:49.103156: 	http://magiccards.info/rtr/en/240.html
+2016-05-01 19:35:49.438175: 72/144  Hit:  Hill Giant (9ED)
+2016-05-01 19:35:49.438175: 	http://magiccards.info/9e/en/197.html
+2016-05-01 19:35:49.678189: 73/144  Miss: Holy Strength (3ED)
+2016-05-01 19:35:49.678189: 	http://magiccards.info/query?q="Holy Strength" e:rv/en
+2016-05-01 19:35:49.929203: 74/144  Hit:  Honden of Life's Web (CHK)
+2016-05-01 19:35:49.929203: 	http://magiccards.info/chk/en/213.html
+2016-05-01 19:35:50.220220: 75/144  Hit:  Honden of Night's Reach (CHK)
+2016-05-01 19:35:50.220220: 	http://magiccards.info/chk/en/116.html
+2016-05-01 19:35:50.445233: 76/144  Hit:  Honden of Seeing Winds (CHK)
+2016-05-01 19:35:50.445233: 	http://magiccards.info/chk/en/69.html
+2016-05-01 19:35:50.705248: 77/144  Hit:  Hurricane (3ED)
+2016-05-01 19:35:50.705248: 	http://magiccards.info/query?q="Hurricane" e:rv/en
+2016-05-01 19:35:50.995264: 78/144  Hit:  Hymn to Tourach (FEM)
+2016-05-01 19:35:50.995264: 	http://magiccards.info/query?q="Hymn to Tourach" e:fe/en
+2016-05-01 19:35:51.326283: 79/144  Hit:  Island (BTD)
+2016-05-01 19:35:51.326283: 	http://magiccards.info/bd/en/79.html
+2016-05-01 19:35:51.716306: 80/144  Hit:  Jace's Erasure (M12)
+2016-05-01 19:35:51.716306: 	http://magiccards.info/m12/en/60.html
+2016-05-01 19:35:52.070326: 81/144  Hit:  Jwar Isle Avenger (OGW)
+2016-05-01 19:35:52.070326: 	http://magiccards.info/ogw/en/58.html
+2016-05-01 19:35:52.365343: 82/144  Hit:  Jwar Isle Refuge (ZEN)
+2016-05-01 19:35:52.365343: 	http://magiccards.info/zen/en/215.html
+2016-05-01 19:35:52.627358: 83/144  Hit:  Jwar Isle Refuge (C13)
+2016-05-01 19:35:52.627358: 	http://magiccards.info/c13/en/300.html
+2016-05-01 19:35:52.896373: 84/144  Hit:  Kamahl, Pit Fighter (10E)
+2016-05-01 19:35:52.896373: 	http://magiccards.info/10e/en/214.html
+2016-05-01 19:35:53.152388: 85/144  Hit:  Kazandu Refuge (ZEN)
+2016-05-01 19:35:53.152388: 	http://magiccards.info/zen/en/217.html
+2016-05-01 19:35:53.385401: 86/144  Hit:  Kazandu Refuge (C13)
+2016-05-01 19:35:53.385401: 	http://magiccards.info/c13/en/301.html
+2016-05-01 19:35:53.791424: 87/144  Hit:  Land Aid '04 (UNH)
+2016-05-01 19:35:53.791424: 	http://magiccards.info/uh/en/102.html
+2016-05-01 19:35:54.069440: 88/144  Hit:  Llanowar Reborn (C15)
+2016-05-01 19:35:54.069440: 	http://magiccards.info/c15/en/293.html
+2016-05-01 19:35:54.366457: 89/144  Hit:  Lone Wolf (7ED)
+2016-05-01 19:35:54.366457: 	http://magiccards.info/7e/en/254.html
+2016-05-01 19:35:54.618472: 90/144  Hit:  Mage's Guile (ONS)
+2016-05-01 19:35:54.618472: 	http://magiccards.info/on/en/91.html
+2016-05-01 19:35:54.888487: 91/144  Hit:  Memory Erosion (CMD)
+2016-05-01 19:35:54.888487: 	http://magiccards.info/cmd/en/50.html
+2016-05-01 19:35:55.149502: 92/144  Hit:  Millstone (M14)
+2016-05-01 19:35:55.149502: 	http://magiccards.info/m14/en/213.html
+2016-05-01 19:35:55.405517: 93/144  Hit:  Mind Rot (DTK)
+2016-05-01 19:35:55.405517: 	http://magiccards.info/dtk/en/110.html
+2016-05-01 19:35:55.684532: 94/144  Hit:  Mitotic Slime (M11)
+2016-05-01 19:35:55.684532: 	http://magiccards.info/m11/en/185.html
+2016-05-01 19:35:56.152559: 95/144  Hit:  Mogg War Marshal (EVG)
+2016-05-01 19:35:56.152559: 	http://magiccards.info/evg/en/45.html
+2016-05-01 19:35:56.647588: 96/144  Hit:  Molimo, Maro-Sorcerer (10E)
+2016-05-01 19:35:56.647588: 	http://magiccards.info/10e/en/280.html
+2016-05-01 19:35:57.038610: 97/144  Hit:  Monkey Monkey Monkey (UNH)
+2016-05-01 19:35:57.038610: 	http://magiccards.info/uh/en/104.html
+2016-05-01 19:35:57.371629: 98/144  Hit:  Mountain (MMQ)
+2016-05-01 19:35:57.371629: 	http://magiccards.info/mm/en/343.html
+2016-05-01 19:35:57.588641: 99/144  Hit:  Narcolepsy (ROE)
+2016-05-01 19:35:57.588641: 	http://magiccards.info/roe/en/79.html
+2016-05-01 19:35:57.846656: 100/144  Hit:  Nature's Lore (5ED)
+2016-05-01 19:35:57.846656: 	http://magiccards.info/query?q="Nature's Lore" e:5e/en
+2016-05-01 19:35:58.215677: 101/144  Hit:  Nature's Lore (ICE)
+2016-05-01 19:35:58.215677: 	http://magiccards.info/query?q="Nature's Lore" e:ia/en
+2016-05-01 19:35:58.706705: 102/144  Hit:  Nissa's Pilgrimage (ORI)
+2016-05-01 19:35:58.706705: 	http://magiccards.info/ori/en/190.html
+2016-05-01 19:35:59.007723: 103/144  Hit:  Ooze Flux (GTC)
+2016-05-01 19:35:59.007723: 	http://magiccards.info/gtc/en/128.html
+2016-05-01 19:36:02.542925: 104/144  Hit:  Ooze Garden (ALA)
+2016-05-01 19:36:02.542925: 	http://magiccards.info/ala/en/143.html
+2016-05-01 19:36:02.868943: 105/144  Hit:  Ouphe Vandals (5DN)
+2016-05-01 19:36:02.868943: 	http://magiccards.info/5dn/en/90.html
+2016-05-01 19:36:03.292968: 106/144  Hit:  Panther Warriors (6ED)
+2016-05-01 19:36:03.292968: 	http://magiccards.info/6e/en/243.html
+2016-05-01 19:36:03.759994: 107/144  Hit:  Parallel Lives (ISD)
+2016-05-01 19:36:03.759994: 	http://magiccards.info/isd/en/199.html
+2016-05-01 19:36:04.355028: 108/144  Hit:  Phantom Wings (BOK)
+2016-05-01 19:36:04.355028: 	http://magiccards.info/bok/en/46.html
+2016-05-01 19:36:04.814055: 109/144  Hit:  Plains (MMQ)
+2016-05-01 19:36:04.814055: 	http://magiccards.info/mm/en/331.html
+2016-05-01 19:36:05.269081: 110/144  Hit:  Power Leak (4ED)
+2016-05-01 19:36:05.269081: 	http://magiccards.info/query?q="Power Leak" e:4e/en
+2016-05-01 19:36:05.947119: 111/144  Hit:  Power Sink (5ED)
+2016-05-01 19:36:05.947119: 	http://magiccards.info/query?q="Power Sink" e:5e/en
+2016-05-01 19:36:06.493151: 112/144  Hit:  Power Sink (4ED)
+2016-05-01 19:36:06.493151: 	http://magiccards.info/query?q="Power Sink" e:4e/en
+2016-05-01 19:36:06.842171: 113/144  Hit:  Power Sink (3ED)
+2016-05-01 19:36:06.842171: 	http://magiccards.info/query?q="Power Sink" e:rv/en
+2016-05-01 19:36:07.279196: 114/144  Hit:  Predator Ooze (DKA)
+2016-05-01 19:36:07.279196: 	http://magiccards.info/dka/en/124.html
+2016-05-01 19:36:07.769224: 115/144  Hit:  R&D's Secret Lair (UNH)
+2016-05-01 19:36:07.769224: 	http://magiccards.info/uh/en/135.html
+2016-05-01 19:36:08.122244: 116/144  Hit:  Rhystic Lightning (PCY)
+2016-05-01 19:36:08.122244: 	http://magiccards.info/pr/en/99.html
+2016-05-01 19:36:08.402260: 117/144  Hit:  Riptide Survivor (C14)
+2016-05-01 19:36:08.402260: 	http://magiccards.info/c14/en/121.html
+2016-05-01 19:36:08.681276: 118/144  Hit:  Scavenger Folk (DRK)
+2016-05-01 19:36:08.681276: 	http://magiccards.info/query?q="Scavenger Folk" e:dk/en
+2016-05-01 19:36:09.010295: 119/144  Hit:  Seal of Primordium (PLC)
+2016-05-01 19:36:09.010295: 	http://magiccards.info/pc/en/153.html
+2016-05-01 19:36:09.398317: 120/144  Hit:  Silver Drake (PLS)
+2016-05-01 19:36:09.398317: 	http://magiccards.info/ps/en/125.html
+2016-05-01 19:36:09.878344: 121/144  Hit:  Smite (STH)
+2016-05-01 19:36:09.878344: 	http://magiccards.info/query?q="Smite" e:sh/en
+2016-05-01 19:36:10.481379: 122/144  Hit:  Sphinx's Tutelage (ORI)
+2016-05-01 19:36:10.481379: 	http://magiccards.info/ori/en/76.html
+2016-05-01 19:36:10.962406: 123/144  Hit:  Staunch-Hearted Warrior (THS)
+2016-05-01 19:36:10.962406: 	http://magiccards.info/ths/en/179.html
+2016-05-01 19:36:11.638445: 124/144  Hit:  Staunch-Hearted Warrior (THS)
+2016-05-01 19:36:11.638445: 	http://magiccards.info/ths/en/179.html
+2016-05-01 19:36:11.755452: 125/144  Miss: Swamp (BFZ)
+2016-05-01 19:36:11.755452: 	http://magiccards.info/bfz/en/260.html
+2016-05-01 19:36:12.076470: 126/144  Hit:  Tawnos's Wand (4ED)
+2016-05-01 19:36:12.076470: 	http://magiccards.info/query?q="Tawnos's Wand" e:4e/en
+2016-05-01 19:36:12.360486: 127/144  Hit:  Tel-Jilad Outrider (DST)
+2016-05-01 19:36:12.360486: 	http://magiccards.info/ds/en/87.html
+2016-05-01 19:36:12.634502: 128/144  Hit:  Thallid Shell-Dweller (TSP)
+2016-05-01 19:36:12.634502: 	http://magiccards.info/ts/en/226.html
+2016-05-01 19:36:12.931519: 129/144  Hit:  Thassa's Devourer (JOU)
+2016-05-01 19:36:12.931519: 	http://magiccards.info/jou/en/53.html
+2016-05-01 19:36:13.436548: 130/144  Hit:  Thieving Magpie (10E)
+2016-05-01 19:36:13.436548: 	http://magiccards.info/10e/en/115.html
+2016-05-01 19:36:13.889574: 131/144  Hit:  Trap Runner (MMQ)
+2016-05-01 19:36:13.889574: 	http://magiccards.info/mm/en/55.html
+2016-05-01 19:36:14.295597: 132/144  Hit:  Trapjaw Kelpie (EVE)
+2016-05-01 19:36:14.295597: 	http://magiccards.info/eve/en/164.html
+2016-05-01 19:36:14.707621: 133/144  Hit:  Ulamog, the Ceaseless Hunger (BFZ)
+2016-05-01 19:36:14.707621: 	http://magiccards.info/bfz/en/15.html
+2016-05-01 19:36:14.969636: 134/144  Hit:  Unholy Hunger (ORI)
+2016-05-01 19:36:14.969636: 	http://magiccards.info/ori/en/125.html
+2016-05-01 19:36:15.214650: 135/144  Hit:  Unholy Strength (10E)
+2016-05-01 19:36:15.214650: 	http://magiccards.info/10e/en/185.html
+2016-05-01 19:36:15.481665: 136/144  Hit:  Vampire Bats (4ED)
+2016-05-01 19:36:15.481665: 	http://magiccards.info/query?q="Vampire Bats" e:4e/en
+2016-05-01 19:36:15.730679: 137/144  Hit:  Vessel of Malignity (SOI)
+2016-05-01 19:36:15.730679: 	http://magiccards.info/soi/en/144.html
+2016-05-01 19:36:16.167704: 138/144  Hit:  Vessel of Nascency (SOI)
+2016-05-01 19:36:16.167704: 	http://magiccards.info/soi/en/237.html
+2016-05-01 19:36:16.425719: 139/144  Hit:  Vessel of Paramnesia (SOI)
+2016-05-01 19:36:16.425719: 	http://magiccards.info/soi/en/95.html
+2016-05-01 19:36:16.677733: 140/144  Hit:  Vessel of Volatility (SOI)
+2016-05-01 19:36:16.677733: 	http://magiccards.info/soi/en/189.html
+2016-05-01 19:36:16.917747: 141/144  Hit:  Viashino Bey (ULG)
+2016-05-01 19:36:16.917747: 	http://magiccards.info/ul/en/93.html
+2016-05-01 19:36:17.364773: 142/144  Hit:  Volrath's Curse (TMP)
+2016-05-01 19:36:17.364773: 	http://magiccards.info/query?q="Volrath's Curse" e:tp/en
+2016-05-01 19:36:17.657789: 143/144  Hit:  Wall of Roots (MIR)
+2016-05-01 19:36:17.657789: 	http://magiccards.info/query?q="Wall of Roots" e:mr/en
+2016-05-01 19:36:18.018810: 144/144  Hit:  Wastes (OGW)
+2016-05-01 19:36:18.018810: 	http://magiccards.info/ogw/en/183.html
+2016-05-01 19:36:18.029811: Wrote to C:\Git\mtg-sorter\samples\sample_out.csv

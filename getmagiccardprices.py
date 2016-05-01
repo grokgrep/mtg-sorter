@@ -3,7 +3,7 @@
 # Name:         getmagiccardprices.py
 # Authors:      Geoff, Matthew Sheridan
 # Date:         04 October 2012
-# Revision:     23 April 2016
+# Revision:     01 May 2016
 # Copyright:    (c) Geoff 2012
 # Licence:      <your licence>
 
@@ -31,7 +31,7 @@ Options:
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
 __date__    = "28 March 2016"
-__version__ = "0.4c"
+__version__ = "0.4e"
 __status__  = "Development"
 
 import os
@@ -40,6 +40,8 @@ import codecs
 from mtgs_error import *
 from mtgs_getprices import GetPrices
 from docopt import docopt
+
+DEBUG_FILENAME = "debug.log"
 
 if __name__ == "__main__":
     debug = False
@@ -53,17 +55,16 @@ if __name__ == "__main__":
     if args["-o"]:
         overwrite = True
 
+    # Input file:
     read_path  = os.path.normpath(os.getcwd() + "/" + args["<input>"])
     if not os.path.isfile(read_path):
         raise InvalidFileError(read_path)
 
+    # Output file; optional arg, default "<input>_out.csv":
     if args["<output>"]:
         write_path = os.path.normpath(os.getcwd() + "/" + args["<output>"])
     else:
         write_path = os.path.splitext(read_path)[0] + "_out.csv"
-
-    read_format = "deckstats"
-    write_format = "excel"
 
     # Get prices!
     gp = GetPrices(debug)

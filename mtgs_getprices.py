@@ -7,12 +7,12 @@
 # Copyright:    (c) Geoff 2012
 # Licence:      <your licence>
 
-"""Retrieve current price data for MTG cards by name."""
+"""Retrieves current price data for MTG cards by scraping magiccards.info"""
 
 __authors__ = "Geoff, Matthew Sheridan"
 __credits__ = ["Geoff", "Matthew Sheridan"]
-__date__    = "28 March 2016"
-__version__ = "0.4d"
+__date__    = "01 May 2016"
+__version__ = "0.4e"
 __status__  = "Development"
 
 import os
@@ -20,6 +20,7 @@ import sys
 import codecs
 import copy
 import csv
+from datetime import datetime
 import re
 import traceback
 from mtgs_card import MTGCard
@@ -28,7 +29,6 @@ from mtgs_json import MTGJson
 from mtgs_webrenderer import WebRenderer
 from configobj import ConfigObj
 
-# Retrieves current price data for MTG cards by scraping magiccards.info
 class GetPrices:
     global CONFIG_FILENAME
     global FORMATS
@@ -40,23 +40,30 @@ class GetPrices:
                        ["CARD NAME", "QTY", "SET", "LOW (ea.)", "MID (ea.)", "HI (ea.)", "LOW", "MID", "HI"]]
     SEARCH_PATTERN = "TCGPPriceLow\".*\$(\d*.\d\d).*TCGPPriceMid.*\$(\d*.\d\d).*TCGPPriceHigh[^\$]*\$(\d*.\d\d)"
 
-    # Set default values.
     def _defaults(self):
-        self._debug         = None
-        self._read_format   = None
-        self._write_format  = None
-        self._set_defs      = None
-        self._json_set      = None
-        self._count_total   = 0
+        """Set default values."""
+        self._debug = False
+
+        self._cwd = os.path.normpath(os.getcwd())
+        self._debug_path   = ""
+
+        self._read_format  = ""
+        self._write_format = ""
+
+        self._set_defs = None
+        self._json_set = None
+
+        self._count   = 0
         self._count_success = 0
         self._count_failed  = 0
         self._total_price_lo  = 0
         self._total_price_mid = 0
         self._total_price_hi  = 0
 
-    # Converts set codes. Currently only does deckstats to setCode.
     def _convert_setcode(self, code, in_type, out_type="setCode"):
-        """Args:
+        """Converts set codes. Currently only does deckstats to setCode.
+
+        Args:
             code      The code to convert.
             in_type   The type of code to convert.
             out_type  The type of code to return. [default="setCode"]
@@ -85,10 +92,10 @@ class GetPrices:
                 new_code = row[out_col]
         return new_code
 
-    # Retrives set definitions used to translate set identifiers, formatted
-    # same as set_defs.
     def _load_set_defs(self, path):
-        """Args:
+        """Retrives set definitions used to translate set identifiers, formatted same as set_defs.
+
+        Args:
             path  string; File path to definition file set_defs.csv.
 
         Returns:
@@ -109,9 +116,22 @@ class GetPrices:
             raise e
         return dat
 
-    # Prints error message.
+    def _path(self, file):
+        """Returns full path of a file in the current working directory."""
+        return os.path.normpath(self._cwd + "/" + file)
+
+    def _print_debug(self, msg):
+        """Appends debugging info to debug file."""
+        if self._debug:
+            timestamp = datetime.now()
+            with open(self._debug_path, "a") as file:
+                for line in msg.split("\n"):
+                    file.write(str(timestamp) + ": " + line + "\n")
+
     def _print_error(self, err, help=False):
-        """Args:
+        """Prints error message.
+
+        Args:
             msg   string; Error message to print.
             help  bool; Print help message yes/no.
         """
@@ -119,14 +139,16 @@ class GetPrices:
         if help:
             print("\n" + str(__doc__)[:-2])
 
-    # Conduct full read in, scrape, and write out.
     def get_prices(self, input_path, output_path, overwrite=False):
-        """Args:
+        """Conduct full read in, scrape, and write out.
+
+        Args:
             input_path   string; File path to read the list of cards from.
             output_path  string; File path to write the list of cards to.
             overwrite    bool; Idicates whether path should be overwritten or
                          appended.
         """
+        self._count         = 0
         self._count_total   = 0
         self._count_success = 0
         self._count_failed  = 0
@@ -150,19 +172,21 @@ class GetPrices:
         finally:
             self.write_cards(output_path, output_rows, overwrite)
 
-    # Reads from file the list of cards to get prices for.
     def read_cards(self, path):
-        """Args:
+        """Reads from file the list of cards to get prices for.
+
+        Args:
             path  string; File path to read the list of cards from.
 
         Returns:
-            A matrix of cards and quantities.
+            A list of cards and quantities.
         """
         dat = []
         if not os.path.isfile(path):
             raise InvalidFileError(path)
 
         with open(path, "r", encoding="utf-8") as file:
+            self._print_debug("Reading from " + path)
             # Check for header row.
             header = csv.Sniffer().has_header(str(file.read(1024)))
             file.seek(0)
@@ -178,22 +202,22 @@ class GetPrices:
                 if match:
                     dat.append([match, qty])
                 else:
-                    if self._debug:
-                        print("Could not match " + repr(name) +
-                              " in set " + repr(setCode))
+                    self._print_debug("Could not match " + repr(name) +
+                                      " in set " + repr(setCode))
                     self._count_failed += 1
                     self._list_failed.append([name, setCode])
                     # Try partial match w/ most recent set.
 
         if len(dat) < 1:
             raise ZeroLengthOutputError
-        self._count_total = len(dat)
+        self._count = len(dat)
 
         return dat
 
-    # Scrapes magiccards.info for card prices.
     def scrape(self, input_rows):
-        """Args:
+        """Scrapes magiccards.info for card prices.
+
+        Args:
             input_rows  array; The list of card names, quantities, and set identifiers to search for.
 
         Returns:
@@ -204,9 +228,8 @@ class GetPrices:
         dat = []
         counter = 0
 
-        if not self._debug:
-            sys.stdout.write("Fetching...")
-            sys.stdout.flush()
+        sys.stdout.write("Fetching...")
+        sys.stdout.flush()
         regex = re.compile(SEARCH_PATTERN)
 
         try:
@@ -214,6 +237,7 @@ class GetPrices:
                 counter += 1
                 card = row[0]
                 qty  = int(row[1])
+                self._count_total += qty
                 mci_code = self._convert_setcode(card["setCode"],
                                                  in_type="setCode",
                                                  out_type="magicCardsInfoCode")
@@ -255,20 +279,14 @@ class GetPrices:
                     self._list_failed.append([card["name"], card["setCode"]])
 
                 # Display running progress.
-                ########################################
-                if self._debug:
-                    print(str(counter) + "/" + str(self._count_total))
-                    print("> " + card["name"] + " (" + card["setCode"] + ")")
-                    print("  " + url)
-                    if hit:
-                        print("  Hit!")
-                    else:
-                        print("  Miss!")
-                ########################################
-                else:
-                    sys.stdout.write("\rFetching... (" + str(counter) + "/" +
-                                     str(self._count_total) + ")")
-                    sys.stdout.flush()
+                sys.stdout.write("\rFetching... (" + str(counter) + "/" +
+                                  str(self._count) + ")")
+                sys.stdout.flush()
+
+                self._print_debug(str(counter) + "/" + str(self._count) +
+                                  "  " + ["Miss: ", "Hit:  "][hit] +
+                                  card["name"] + " (" + card["setCode"] + ")"
+                                  "\n\t" + url)
 
                 # Push last result onto results.
                 dat.append(output_row)
@@ -281,7 +299,7 @@ class GetPrices:
         finally:
             print("")
             # Total prices for each of the three columns.
-            dat.append(["", "", "", "", "", "",
+            dat.append(["TOTAL", self._count_total, "", "", "", "",
                         round(self._total_price_lo, 2),
                         round(self._total_price_mid, 2),
                         round(self._total_price_hi, 2)])
@@ -314,12 +332,13 @@ class GetPrices:
                 writer.writerow(row)
 
         print("Wrote to " + path)
+        self._print_debug("Wrote to " + path)
 
-    # Prints summary of price scraping.
     def summary(self):
         """Returns summary of last scrape attempt."""
         success = "Found:  " + str(self._count_success) + " card(s)."
-        failed = "Missed: " + str(self._count_failed) + " card(s):"
+        failed  = "Missed: " + str(self._count_failed)  + " card(s):"
+
         for miss in self._list_failed:
             failed += "\n  " + repr(miss[0]) + " (" + repr(miss[1]) + ")"
 
@@ -331,19 +350,18 @@ class GetPrices:
             return failed
         return "No cards searched for."
 
-    def __init__(self, debug=False):
-        self._defaults()
-        self._debug = debug
-
+    def __init__(self, debug=None):
         # Load configuration file info. Make these global later:
         config = ConfigObj(CONFIG_FILENAME)
         config_files  = config["files"]
         config_format = config["format"]
 
-        set_defs_path = os.path.normpath(os.getcwd() + "/" +
-                                         config_files["set_defs"])
-        set_data_path = os.path.normpath(os.getcwd() + "/" +
-                                         config_files["json_sets"])
+        self._defaults()
+        self._debug = debug
+        self._debug_path = self._path(config_files["debug"])
+
+        set_defs_path = self._path(config_files["set_defs"])
+        set_data_path = self._path(config_files["json_sets"])
 
         # Check for errors!
         try:
@@ -355,5 +373,5 @@ class GetPrices:
             _print_error(e, True)
             exit(1)
 
-        self._set_defs  = self._load_set_defs(set_defs_path)
-        self._json_set  = MTGJson(set_data_path)
+        self._set_defs = self._load_set_defs(set_defs_path)
+        self._json_set = MTGJson(set_data_path)
