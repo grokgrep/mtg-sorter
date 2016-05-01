@@ -7,9 +7,9 @@ A collaborative effort by [@awesor](https://github.com/awesor), [@7thGate](https
 Reads in a list of card names and quantities, then scrapes for prices based on a name and printing match (see magiccards.info [search](http://magiccards.info/search.html) and [syntax](http://magiccards.info/syntax.html)).
 
         Usage:
-          new.getprices.py [-do] <input> [<output>]
-          new.getprices.py -h | --help
-          new.getprices.py --version
+          getmagiccardprices.py [-do] <input> [<output>]
+          getmagiccardprices.py -h | --help
+          getmagiccardprices.py --version
 
         Arguments:
           input     Input file. A list of exact card names and quantities, delimited
