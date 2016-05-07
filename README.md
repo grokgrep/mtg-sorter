@@ -32,20 +32,22 @@ Can now search for exact cards in sets and partial name matches.
 ### Issues
 Known causes of misses:
 
-  No price returned at all (e.g. Purphoros's Emissary). Try different editions, skip online editions of cards.
-
-  Exact name duplicates? (e.g. Forest OGW misses, Forest SOI hits)
+  No price returned at all (e.g. Purphoros's Emissary). Some cards just don't have price data listed on MCI; try going directly to the relevant TCGPlayer page.
 
   Inconsistent MTG JSON data means that some exact URLs can be used.
 
 ### To-Do
-Add handling for multiple instances of the same card in input (duplicates, foils).
+Remove dependency on PySide for QT; try Selenium. Requiring the use of QT means that the program cannot run without X or a similar graphical environment.
+
+Add handling for multiple instances of the same card in input (duplicates, foils). Shouldn't happen, but hey!
 
 Add better exception handling!
 
 Clean up documentation (what is Python style??).
 
-Improve formatting for deckstats.net input (add: .dec deck format).
+Improve formatting for deckstats.net input (add: .dec deck format). Add support for proper codes as an additional format.
+
+Add additional card info to output (e.g. number, type, cost).
 
 ### Dependencies and Resources
 [ConfigObj](http://www.voidspace.org.uk/python/configobj.html)
